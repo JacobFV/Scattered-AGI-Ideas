@@ -4,7 +4,7 @@ A non-exhaustive collection of artificial intelligence resources. Please submit 
 ## Reinforcement Learning
 
 ### Agents
-- [OpenAI Baselines](https://github.com/openai/baseline): "OpenAI Baselines is a set of high-quality implementations of reinforcement learning algorithms." Check out (implementations)[https://github.com/openai/baselines/network/dependents?package_id=UGFja2FnZS01MDIzMjE5Mw%3D%3D].
+- [OpenAI Baselines](https://github.com/openai/baseline): "OpenAI Baselines is a set of high-quality implementations of reinforcement learning algorithms." Check out [implementations](https://github.com/openai/baselines/network/dependents?package_id=UGFja2FnZS01MDIzMjE5Mw%3D%3D).
 - [plan2explore](https://github.com/ramanans1/plan2explore)
 
 ### Frameworks
@@ -22,7 +22,7 @@ that investigate core capabilities of reinforcement learning (RL) agents with
 two objectives. First, to collect clear, informative and scalable problems
 that capture key issues in the design of general and efficient learning algorithms. Second, to study agent behaviour through their performance
 on these shared benchmarks. (https://arxiv.org/abs/1908.03568)
-- Arcade Learning Environment (ALE)
+- Arcade Learning Environment ([ALE](https://github.com/mgbellemare/Arcade-Learning-Environment)): Automatically benchmark agents on an array of video games.
   > interface to hundreds of Atari 2600 game environments, each one different, interesting, and designed to be a challenge for human players (https://jair.org/index.php/jair/article/view/10819)
 - [Super Mario Bros](https://github.com/Kautenja/gym-super-mario-bros)
   > An OpenAI Gym environment for Super Mario Bros. & Super Mario Bros. 2 (Lost Levels) on The Nintendo Entertainment System (NES) using the nes-py emulator.
