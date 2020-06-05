@@ -28,3 +28,4 @@ on these shared benchmarks. (https://arxiv.org/abs/1908.03568)
   > An OpenAI Gym environment for Super Mario Bros. & Super Mario Bros. 2 (Lost Levels) on The Nintendo Entertainment System (NES) using the nes-py emulator.
 - [MalmoEnv](https://github.com/Microsoft/malmo/tree/master/MalmoEnv): MalmoEnv is an OpenAI "gym" Python Environment for Malmo/Minecraft, directly implemented Python to Java Minecraft.
 - [DeepMind Lab](https://github.com/deepmind/lab) "is a 3D learning environment based on id Software's Quake III Arena via ioquake3 and other open source software"
+- [Open AI Gym Environments](https://github.com/openai/gym/blob/master/docs/environments.md)
