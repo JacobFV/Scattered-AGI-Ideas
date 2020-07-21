@@ -1,6 +1,10 @@
 # AI-Resources
 A non-exhaustive collection of artificial intelligence resources. Please submit pull requests.
 
+## General
+
+- https://openai.com/resources/ This includes Microscope which lets you view the attention patterns of a convolutional neural network.
+
 ## Reinforcement Learning
 
 ### Agents
