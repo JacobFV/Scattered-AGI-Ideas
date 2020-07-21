@@ -8,6 +8,7 @@ A non-exhaustive collection of artificial intelligence resources. Please submit 
 - [plan2explore](https://github.com/ramanans1/plan2explore)
 
 ### Frameworks
+- [Nengo](nengo.ai) Large scale cognitive brain modeling toolkit. Several publications [here](https://www.nengo.ai/publications/) including a good [introduction to nengo](http://compneuro.uwaterloo.ca/files/publications/bekolay.2014.pdf)
 - gym
 - [Acme](https://github.com/deepmind/acme)
   > Acme is a library of reinforcement learning (RL) agents and agent building blocks. Acme strives to expose simple, efficient, and readable agents, that serve both as reference implementations of popular algorithms and as strong baselines, while still providing enough flexibility to do novel research. The design of Acme also attempts to provide multiple points of entry to the RL problem at differing levels of complexity.
