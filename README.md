@@ -9,6 +9,8 @@ A non-exhaustive collection of artificial intelligence resources. Please submit 
 
 ### Frameworks
 - [Nengo](nengo.ai) Large scale cognitive brain modeling toolkit. Several publications [here](https://www.nengo.ai/publications/) including a good [introduction to nengo](http://compneuro.uwaterloo.ca/files/publications/bekolay.2014.pdf)
+- [tdw](https://github.com/threedworld-mit/tdw/) Plenty of examples in the repository including dynamic crowd simulation.
+  > ThreeDWorld (TDW) is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 - gym
 - [Acme](https://github.com/deepmind/acme)
   > Acme is a library of reinforcement learning (RL) agents and agent building blocks. Acme strives to expose simple, efficient, and readable agents, that serve both as reference implementations of popular algorithms and as strong baselines, while still providing enough flexibility to do novel research. The design of Acme also attempts to provide multiple points of entry to the RL problem at differing levels of complexity.
