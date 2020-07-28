@@ -2,6 +2,11 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Free Energy Principle](https://en.wikipedia.org/wiki/Free_energy_principle)
+  - minimize variational free energy by adjusting 1) actions 2) world models
+
+- [Active Inference: A Process Theory](https://www.mitpressjournals.org/doi/pdf/10.1162/NECO_a_00912#:~:text=In%20brief%2C%20active%20inference%20separates,model%20of%20(observed)%20outcomes.)
+
 - [Automatic Recall Machines: Internal Replay, Continual Learning and the Brain](https://arxiv.org/abs/2006.12323)
   - "optimizing for not forgetting calls for the generation of samples that are specialized to each real training batch"
   - generates samples from implicit internal memory and trains on reals data most conflicting with generated data
@@ -15,6 +20,7 @@ Some relevant articles that I will apply in my RL systems
 - [Predictive Information Accelerates Learning in RL](https://arxiv.org/pdf/2007.12401.pdf)
   - maximizing mutual information between past and future by selective feature attention/compression improves sample efficency
   - defines _predictive information_ as "the mutual information between the past and the future"
+  - mathematical formulation for predictive information in paper
   > the task of the agent may be described as finding a representation of the past that is most useful for predicting the future, upon which an optimal policy may more easily be learned.
 
 - [Goal-Aware Prediction: Learning to Model What Matters](https://arxiv.org/abs/2007.07170)
@@ -45,4 +51,8 @@ Structures](https://arxiv.org/abs/2007.09820)
 - [ESCELL: Emergent Symbolic Cellular Language](https://arxiv.org/abs/2007.09469)
   - a sender and reciever cooperate to build emergant symbolic language to describe biological cells
   
+- [Complex Skill Acquisition through Simple Skill Adversarial Imitation Learning](https://arxiv.org/abs/2007.10281)
+  - "Some skills can be considered as approximate combinations of certain subskill"
+  - aims to learn a "latent space structure so that relationships between embeddings of behaviors and embeddings of subskills that comprise these behaviors are captured in a meaningful way"
+ 
 - Generate temporal superresolution trajectories by training on accelerated sequences
