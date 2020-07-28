@@ -57,3 +57,35 @@ Structures](https://arxiv.org/abs/2007.09820)
   - aims to learn a "latent space structure so that relationships between embeddings of behaviors and embeddings of subskills that comprise these behaviors are captured in a meaningful way"
  
 - Generate temporal superresolution trajectories by training on accelerated sequences
+
+# General AI References
+
+## Meta-learning beyond few-shot learning
+
+> When we say a task was “easy” to learn, we usually mean that it didn’t take us too long and that the process was relatively smooth. From a machine learning perspective, this implies rapid convergence. It also implies parameter updates should improve performance monotonically (well, in expectation at least). Oscillating back and forth is equivalent to not knowing what to do.
+>
+> Both these notions revolve around how we travel from our initialisation to our final destination on the model’s loss surface. The ideal is a going straight down-hill to the parameterisation with smallest loss for the given task. Worst case is taking a long detour with lots of back-and-forts. In Leap, we leverage the following insight:
+>
+> Transferring knowledge therefore implies influencing the parameter trajectory such that it converges as rapidly and smoothly as possible.
+>
+> ![surf](http://flennerhag.com/img/leap/surf.png)
+>
+> Transferring knowledge across learning processes means that learning a new task becomes easier in the sense that we enjoy a shorter and smoother parameter trajectory.
+>
+> ...
+>
+> Consequently, we can learn to transfer knowledge across learning processes by learning an initialisation such that the expected distance we have to travel when learning a similar task is as short as possible.
+>
+> ...
+>
+> Leap learns an initialisation $\theta_0$ such that the expected distance of any learning process from that task distribution is as short as possible in expectation. Thus, Leap extracts information across a variety of learning processes during meta-training and condenses it into a good initial guess that ensures learning a new task is as easy as possible. Importantly, this initial guess has nothing to do with the details of the final parameterisation on any task, it is meta-learned to facilitate the process of learning those parameters, whatever they might be.
+>
+> ![evo](http://flennerhag.com/img/leap/evo.png)
+>
+> Leap learns an initialisation that induces faster learning on tasks from the given task distribution. By minimising the distance we need to travel, we make tasks as ‘easy’ as possible to learn.
+
+http://flennerhag.com/2019-05-09-transferring-knowledge-across-learning-processes/
+
+https://arxiv.org/abs/1812.01054
+
+**This means new modules should be born where they may be least specialized but have fasted mean predicted convergence speed**
