@@ -2,8 +2,20 @@
 
 Some relevant articles that I will apply in my RL systems
 
-- [Nengo](nengo.ai/publications)
-  - more biologically accurate networks 
+- [Automatic Recall Machines: Internal Replay, Continual Learning and the Brain](https://arxiv.org/abs/2006.12323)
+  - "optimizing for not forgetting calls for the generation of samples that are specialized to each real training batch"
+  - generates samples from implicit internal memory and trains on reals data most conflicting with generated data
+  - backpropagation "inverts" the neural network
+  - backpropagation identifies which experiences are most conflicting with existing memories
+  - internal replay of unexpected stimulii by backpropagation similar to top-down biasing by the neocortex
+
+- [Nengo Publications](nengo.ai/publications)
+  - spiking neural network are more biologically accurate models 
+  
+- [Predictive Information Accelerates Learning in RL](https://arxiv.org/pdf/2007.12401.pdf)
+  - maximizing mutual information between past and future by selective feature attention/compression improves sample efficency
+  - defines _predictive information_ as "the mutual information between the past and the future"
+  > the task of the agent may be described as finding a representation of the past that is most useful for predicting the future, upon which an optimal policy may more easily be learned.
 
 - [Goal-Aware Prediction: Learning to Model What Matters](https://arxiv.org/abs/2007.07170)
   - unaligned objectives: future state reconstruction and policy objective
