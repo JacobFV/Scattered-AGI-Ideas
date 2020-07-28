@@ -2,6 +2,17 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
+  - intelligence is "skill-acquisition efficiency"
+  - describes and introduces the Abstraction and Reasoning Corpus "general AI benchmark" 
+  > solely measuring skill at any given task falls short of measuring intelligence, because skill is heavily modulated by prior knowledge and experience: unlimited priors or unlimited training data allow experimenters to "buy" arbitrary levels of skills for a system, in a way that masks the system's own generalization power.
+  - [human intelligence &ne; AGI](https://arxiv.org/abs/2007.07710)
+  - video series
+    1. [Foundations](https://youtu.be/3_qGrmD6iQY)
+    2. [Human Priors](https://youtu.be/THcuTJbeD34)
+    3. [Math](https://youtu.be/cuyM63ugsxI)
+    4. [The ARC Challange](https://youtu.be/O9kFX33nUcU)
+
 - [Free Energy Principle](https://en.wikipedia.org/wiki/Free_energy_principle)
   - minimize variational free energy by adjusting 1) actions 2) world models
 
