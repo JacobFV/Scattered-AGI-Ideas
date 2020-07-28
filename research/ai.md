@@ -15,6 +15,13 @@ Some relevant articles that I will apply in my RL systems
   - backpropagation identifies which experiences are most conflicting with existing memories
   - internal replay of unexpected stimulii by backpropagation similar to top-down biasing by the neocortex
 
+- [Noisy Agents: Self-supervised Exploration by Predicting Auditory Events](https://arxiv.org/abs/2007.13729)
+  - "we introduce an intrinsic reward function of predicting sound for RL exploration"
+  - "use the prediction errors as intrinsic rewards to guide RL exploration."
+  - "The intrinsic rewards could serve as incentives that allow the agent to distinguish novel and fruitful states, but the lack of extrinsic rewards impedes the awareness of auditory events where agents can earn more rewards and need to visit again"
+  - " the intrinsic reward can diminish quickly during training, since the learned predictive model usually converges to a stable state representation of the environment"
+  > "Since auditory signals are prevalent in real-world scenarios, we believe that combining them with visual signals could help guide exploration in many robotic applications [. . .]. For example, the honk of a car may be a useful signal that a self-driving agent has entered an unexpected situation"
+
 - [Nengo Publications](nengo.ai/publications)
   - spiking neural network are more biologically accurate models 
   
@@ -89,3 +96,6 @@ http://flennerhag.com/2019-05-09-transferring-knowledge-across-learning-processe
 https://arxiv.org/abs/1812.01054
 
 **This means new modules should be born where they may be least specialized but have fasted mean predicted convergence speed**
+
+- [Mind Your Manners! A Dataset and A Continual Learning Approach for Assessing Social Appropriateness of Robot Actions](https://arxiv.org/abs/2007.12506)
+  - dataset of robot action appropriatenes
