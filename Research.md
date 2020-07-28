@@ -6,6 +6,7 @@ Some relevant articles that I will apply in my RL systems
   - minimize variational free energy by adjusting 1) actions 2) world models
 
 - [Active Inference: A Process Theory](https://www.mitpressjournals.org/doi/pdf/10.1162/NECO_a_00912#:~:text=In%20brief%2C%20active%20inference%20separates,model%20of%20(observed)%20outcomes.)
+  > "all neuronal processing (and action selection) can be explained by maximizing Bayesian model evidence—or minimizing variational free energy \[. . .\] the fact that a gradient descent appears to be a valid description of neuronal activity means that variational free energy is a Lyapunov function for neuronal dynamics, which therefore conform to Hamilton’s principle of least action
 
 - [Automatic Recall Machines: Internal Replay, Continual Learning and the Brain](https://arxiv.org/abs/2006.12323)
   - "optimizing for not forgetting calls for the generation of samples that are specialized to each real training batch"
