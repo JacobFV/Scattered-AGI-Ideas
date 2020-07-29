@@ -2,6 +2,9 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Getting Artificial Neural Networks Closer to Animal Brains](https://maraoz.com/2020/07/12/brains-vs-anns/)
+  - creative approach to analyzing neural network architecture from a biological perspective
+
 - [Relational Neural Machines](https://arxiv.org/abs/2002.02193)
   - neurosymbolic integration paper
   > This paper presents Relational Neural Machines, a novel framework allowing to jointly train the parameters of the learners and of a First–Order Logic based reasoner. A Relational Neural Machine is able to recover both classical learning from supervised data in case of pure sub-symbolic learning, and Markov Logic Networks in case of pure symbolic reasoning, while
