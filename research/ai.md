@@ -2,6 +2,9 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Collective Learning by Ensembles of Altruistic Diversifying Neural Networks](https://arxiv.org/abs/2006.11671)
+ > ensembles of interacting neural networks \[. . .\] aim to maximize their own performance but also their functional relations to other networks \[. . .\] outperform independent ones, and that optimal ensemble performance is reached when the coupling between networks increases diversity and degrades the performance of individual networks \[. . .\] even without a global goal for the ensemble, optimal collective behavior emerges from local interactions between networks
+
 - [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
   - intelligence is "skill-acquisition efficiency"
   - describes and introduces the Abstraction and Reasoning Corpus "general AI benchmark" 
