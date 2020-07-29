@@ -1,2 +1,2 @@
 # AI-Resources
-A non-exhaustive collection of artificial intelligence resources. Please submit pull requests.
+A non-exhaustive collection of resources for building artificial general intelligence. Please submit pull requests.
