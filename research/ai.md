@@ -2,8 +2,11 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Emergent cooperation through mutual information maximization](https://arxiv.org/abs/2006.11769)
+  >  The algorithm is based on the hypothesis that highly correlated actions are a feature of cooperative systems, and hence, we propose the insertion of an auxiliary objective of maximization of the mutual information between the actions of agents in the learning problem \[. . .\] maximization of mutual information among agents promotes the emergence of cooperation in social dilemmas
+
 - [Collective Learning by Ensembles of Altruistic Diversifying Neural Networks](https://arxiv.org/abs/2006.11671)
- > ensembles of interacting neural networks \[. . .\] aim to maximize their own performance but also their functional relations to other networks \[. . .\] outperform independent ones, and that optimal ensemble performance is reached when the coupling between networks increases diversity and degrades the performance of individual networks \[. . .\] even without a global goal for the ensemble, optimal collective behavior emerges from local interactions between networks
+  > ensembles of interacting neural networks \[. . .\] aim to maximize their own performance but also their functional relations to other networks \[. . .\] outperform independent ones, and that optimal ensemble performance is reached when the coupling between networks increases diversity and degrades the performance of individual networks \[. . .\] even without a global goal for the ensemble, optimal collective behavior emerges from local interactions between networks
 
 - [On the Measure of Intelligence](https://arxiv.org/abs/1911.01547)
   - intelligence is "skill-acquisition efficiency"
