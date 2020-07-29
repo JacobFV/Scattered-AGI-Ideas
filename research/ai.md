@@ -2,6 +2,14 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Relational Neural Machines](https://arxiv.org/abs/2002.02193)
+  - neurosymbolic integration paper
+  > This paper presents Relational Neural Machines, a novel framework allowing to jointly train the parameters of the learners and of a First–Order Logic based reasoner. A Relational Neural Machine is able to recover both classical learning from supervised data in case of pure sub-symbolic learning, and Markov Logic Networks in case of pure symbolic reasoning, while
+allowing to jointly train and perform inference in hybrid learning tasks
+
+- [Graph Representation Learning via Graphical Mutual Information Maximization](https://arxiv.org/abs/2002.01169)
+  - proposes "Graphical Mutual Information (GMI), to measure the correlation between input graphs and high-level hidden representations."
+
 - [Emergent cooperation through mutual information maximization](https://arxiv.org/abs/2006.11769)
   >  The algorithm is based on the hypothesis that highly correlated actions are a feature of cooperative systems, and hence, we propose the insertion of an auxiliary objective of maximization of the mutual information between the actions of agents in the learning problem \[. . .\] maximization of mutual information among agents promotes the emergence of cooperation in social dilemmas
 
