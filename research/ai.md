@@ -2,6 +2,38 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Forgetful Experience Replay in Hierarchical Reinforcement Learning from Demonstrations](https://arxiv.org/abs/2006.09939)
+  - hierarchiel methods and expert demonstrations improve sample efficency
+  - hierarchiel model extracts subgoals from sequence
+  - Forgetful Experience Replay (ForgER) uses good expert samples to reach its subgoals
+  - this allows focusing on good parts of expert demonstration while ignoring mistakes
+  - wins MineRL competition (get diamond in MineCraft)
+
+- [Semantic Visual Navigation by Watching YouTube Videos](https://arxiv.org/abs/2006.10034)
+  - inverse model converts videos into episodes
+  - off the shelf object detectors identify likelihood of objects in scene
+  - Q-learns discounted likelihood of object from given starting point
+  - :question: can the object detector learn by unsupervised clustering?
+  - :star: beyond locating nearness likelihood of object, this approach could identify the likelihood of any perspective in a situation such as when a chess move 'feels right'
+  ![](https://matthewchang.github.io/value-learning-from-videos/video-dqn-website_files/vfv.gif)
+  - [website and video](https://matthewchang.github.io/value-learning-from-videos/)
+
+- [ShieldNN: A Provably Safe NN Filter for Unsafe NN
+Controllers](https://arxiv.org/abs/2006.09564)
+  - use neural networks to ensure safety of other neural networks
+  - :star: ensembles arrange NN's in parallel; ShieldNN introduces the concept of NN's in series. What about networks?
+
+- [SAMBA: Safe Model-Based & Active Reinforcement Learning](https://arxiv.org/pdf/2006.09436.pdf)
+  - model-based approach reduces sample cost
+  - auxillary acquisition function samples safe yet uncertain points in the policy transition model 
+  - models transitions by gaussian processes (GP's)
+  - maximizes information gain by variance reductions in GP
+  - biases policy samples to be close to the training set when exploring to maintain safety
+  - unsafe states do not maximize information gain (the intrinsic objective) because of little sampling so they are not exploited
+
+- [Automatic Curriculum Learning through Value Disagreement](https://arxiv.org/abs/2006.09641)
+  > Our key insight is that if we can sample goals at the frontier of the set of goals that an agent is able to reach, it will provide a significantly stronger learning signal compared to randomly sampled goals. To operationalize this idea, we introduce a goal proposal module that prioritizes goals that maximize the epistemic uncertainty of the Q-function of the policy.
+
 - [Getting Artificial Neural Networks Closer to Animal Brains](https://maraoz.com/2020/07/12/brains-vs-anns/)
   - creative approach to analyzing neural network architecture from a biological perspective
 
