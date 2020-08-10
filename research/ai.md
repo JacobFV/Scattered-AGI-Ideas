@@ -2,6 +2,17 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Compositional Networks Enable Systematic Generalization for Grounded Language Understanding](https://arxiv.org/abs/2008.02742)
+  > Guided by the notion that compositionality is the central feature of human languages which deep
+networks are failing to internalize, we construct a compositional deep network to guide the behavior
+of robots \[. . .\] Given a command, a \[automatically discovered\] command-specific network
+is assembled from previously-trained components \[. . .\] derived from the
+linguistic structure of the command. In this way, the compositional structure of language is reflected in
+the compositional structure of the computations executed by the network
+  - generalizes compositional concepts on the gSCAN VP-NP dataset
+  - replaces data augmentation with compositionality
+  - semantic parsing over constiuency or dependency parsing
+
 - [Forgetful Experience Replay in Hierarchical Reinforcement Learning from Demonstrations](https://arxiv.org/abs/2006.09939)
   - hierarchiel methods and expert demonstrations improve sample efficency
   - hierarchiel model extracts subgoals from sequence
