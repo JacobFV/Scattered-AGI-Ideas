@@ -2,10 +2,21 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [A Neural-Symbolic Framework for Mental Simulation](https://arxiv.org/abs/2008.02356)
+  - __TO READ__
+
+- [A critical analysis of metrics used for measuring progress in artificial intelligence](https://arxiv.org/abs/2008.02577)
+  - metrics on [Papers with Code](https://paperswithcode.com/) inadequately reflect classifier's performance " especially when used with imbalanced datasets"
+  - reporting of (benchmark) metrics is "partly inconsistent and partly unspecific"
+
 - [Explore then Execute: Adapting without Rewards via Factorized Meta-Reinforcement Learning](https://arxiv.org/abs/2008.02790)
+  - decouple chicken and egg problem by independantly learning execution and exploration policies
   - DREAM exploration objective "identify\[s\] key information in the environment, independent of how this information will exactly be used solve the task"
   - "explores and consequently adapts to new environments, requiring *no reward signal* when the task is specified via an instruction"
-  - **TO READ**
+  - "we allow each episode to have a different task provided via a different instruction"
+  - the agent (in this case, a chef) evaluates the reward of a situation without a reward function
+  - metalearning should be utilized to provide information to many related tasks-not just one
+  - learn an exploration policy to recover the information from demonstrations and learn an execution policy (and take note of what information was necesary for that policy)
 
 - [The Emergence of Adversarial Communication in Multi-Agent Reinforcement Learning](https://arxiv.org/abs/2008.02616)
   - use differentiable communication channels to accelerate learning and convergence
