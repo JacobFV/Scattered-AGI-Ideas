@@ -2,6 +2,23 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Explore then Execute: Adapting without Rewards via Factorized Meta-Reinforcement Learning](https://arxiv.org/abs/2008.02790)
+  - DREAM exploration objective "identify\[s\] key information in the environment, independent of how this information will exactly be used solve the task"
+  - "explores and consequently adapts to new environments, requiring *no reward signal* when the task is specified via an instruction"
+  - **TO READ**
+
+- [The Emergence of Adversarial Communication in Multi-Agent Reinforcement Learning](https://arxiv.org/abs/2008.02616)
+  - use differentiable communication channels to accelerate learning and convergence
+  - cooperative teams recover from selfish (but not malicious) influence with learnable *filter taps*
+  - dynamicly constructed agregation graph neural network defines communication channels according to spatial inter-agent metrics
+  - applies inverse communication signal encoder to each point in the 2D environment space to build whitebox analysis communication maps
+
+- [CrowDEA: Multi-view Idea Prioritization with Crowds](https://arxiv.org/abs/2008.02354)
+  - prioritized attention respecting a latent criterea (:star: human behavior optimizes a latent criterea: the 'heart')
+  - evaluators do not share neither perspectives, criterea, nor values
+  - frontier ideas maximize the common's interest
+  - builds saliency matrix to interpret results
+
 - [Compositional Networks Enable Systematic Generalization for Grounded Language Understanding](https://arxiv.org/abs/2008.02742)
   > Guided by the notion that compositionality is the central feature of human languages which deep
 networks are failing to internalize, we construct a compositional deep network to guide the behavior
@@ -12,6 +29,7 @@ the compositional structure of the computations executed by the network
   - generalizes compositional concepts on the gSCAN VP-NP dataset
   - replaces data augmentation with compositionality
   - semantic parsing over constiuency or dependency parsing
+  - builds compositional RNN graphical network with each node associated with the lexicographical model
 
 - [Forgetful Experience Replay in Hierarchical Reinforcement Learning from Demonstrations](https://arxiv.org/abs/2006.09939)
   - hierarchiel methods and expert demonstrations improve sample efficency
