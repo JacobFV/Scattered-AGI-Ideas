@@ -1,8 +1,20 @@
 # Thoughts
 
-## 1 August 2020
+## 11 August 2020
 
-Simplifying affective states as a hidden variable in the latent dynamics of every cortical column, the digital heart is coallescing emotive system unifying various domains of processing and nondifferentiably influencing the physiological state which, in turn, biases activation patterns. I still need to rigorously formulate this concept mathematically and detirmine to what extent affective state should be policy vs. environmentally controlled.
+*Read and reflected on [dopaminergetic pathways](https://en.wikipedia.org/wiki/Dopaminergic_pathways#Function)*
+
+The brain is an power consumption optimizing machine. It attempts to minimally explain the physiological reward (along with all other) signals recieved by something like Hebbian learning. The positive surprise of a reward is encoded by the frequency of dopaminergetic pathway activations - hance, energy consumption. When a neuron activates prior to recieving reward along dopaminergetic pathways, a synaptic connection may be strengthened. In attempting to maintain a constant expectation of reward, top-down biasing from the dopaminergetic pathways to the behavior pathways bias activations that locally activation gradients between the pathways and globally optimize neural activations to approach the true reward represented by the latent variable that the dopaminergetic pathways signal.
+
+This model of both local and global energy minimization teaches every pathway and neuron connected to the dopaminergetic pathways what reward to expect. It explains why a brain accostomed to a particular degree of reward demands so much change when physiological reward changes (as in breaking addictions). This model does not explain why the brain seeks out more reward than it is accustomed to. Maybe it does not.
+
+If reward pathways are the critic then they must follow - not preceed - the actor. Since the critic models deopamine receptors, it cannot actually be changed by bottom up activations. But the graphical model attempts to view things that way. This is the case where some observables and actions (external senses and behaviors) explain another observable (internal dopamine).
+
+Considered the free energy minimization more, the model makes dopamine prediction more important than external information. Hence, the brain primarily models dopamine as an effect rather than a cause. I believe the this may be so if reward error is usually greator than other predictive modeling errors.
+
+I could test this hypothesis by observing the self-organized arrangement of graphical nodes and testing if the divergance is positive leading to the reward node. But how can I make reward predictive errors cost more than any other predictive error? Are dense rewards the answer? Should I add a `cost_of_error` hyperparemter to each node? I know, I will encode this information in the intrinsic `weight` of the reward node so that every connect with that node shares the weight variable. 
+
+This seems to affect large behavioral decisions, but what about smaller ones? They are not very informative to global reward and so learn their own unsupervised, locally free-energy minimizing synaptic strengths and activation potentials.
 
 ## 10 August 2020
 
@@ -24,3 +36,9 @@ Simplifying affective states as a hidden variable in the latent dynamics of ever
 *To think about* robotic interface
   - 2D image sensor
   - what kind of body? humanoid? are the physics real?
+
+## 1 August 2020
+
+### Digital Heart
+
+Simplifying affective states as a hidden variable in the latent dynamics of every cortical column, the digital heart is coallescing emotive system unifying various domains of processing and nondifferentiably influencing the physiological state which, in turn, biases activation patterns. I still need to rigorously formulate this concept mathematically and detirmine to what extent affective state should be policy vs. environmentally controlled. 
