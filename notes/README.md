@@ -2,6 +2,14 @@
 
 ## 11 August 2020
 
+*Read and reflected on task-mode network, saliency network, default mode network*
+
+The saliency network "has been implicated in the detection and integration of emotional and sensory stimuli, as well as in modulating the switch between the internally directed cognition of the default mode network and the externally directed cognition of the central executive network" ([wikipedia](https://en.wikipedia.org/wiki/Salience_network#Function))
+
+Are these networks two separate policies, one minimizing free energy by acting, another minimizing free energy by (re)modeling?
+
+Also, [Saliency, switching, attention and control: a network model of insula function](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2899886/) presents the saliency network as making the transition from internal to external (ave. 20sec) focus relatively distinct. Can I introduce similar biases in the nodular (intrer or intra) network?
+
 *Read and reflected on [dopaminergetic pathways](https://en.wikipedia.org/wiki/Dopaminergic_pathways#Function)*
 
 The brain is an power consumption optimizing machine. It attempts to minimally explain the physiological reward (along with all other) signals recieved by something like Hebbian learning. The positive surprise of a reward is encoded by the frequency of dopaminergetic pathway activations - hance, energy consumption. When a neuron activates prior to recieving reward along dopaminergetic pathways, a synaptic connection may be strengthened. In attempting to maintain a constant expectation of reward, top-down biasing from the dopaminergetic pathways to the behavior pathways bias activations that locally activation gradients between the pathways and globally optimize neural activations to approach the true reward represented by the latent variable that the dopaminergetic pathways signal.
