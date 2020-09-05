@@ -18,6 +18,10 @@ I noted that the Bayesian brain theory makes a sort of inverse model policy foll
 
 Reading *Spinning Up: SAC*, maximum entropy action is about the least environmental influence. Internally, the agent minimizes entropy.
 
+## ...
+
+Totally intrinsic RL does not ignore rewards. It might even explore the information the state distributions bring to reward distributions. But it is not necesarily motivated to maximize reward. 
+
 ## 11 August 2020
 
 *Read and reflected on task-mode network, saliency network, default mode network*
