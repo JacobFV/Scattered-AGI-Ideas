@@ -2,13 +2,21 @@
 
 ## 5 September 2020
 
+
+
 After reading the headlines on gpt3 standing in between narrow and general ai, I note: **the question is not is it general intelligence, but how general is its intelligence?** There is large intelligence variation within the human spectrum (though still striking even in the lower quartile)
 
-"Freedom" of will is identified by the inverse of a posterior compoarison between an agent's desires and reality. Ex: *I want to be free. -> You must not be where you want to be. The rock star feels free even though he is a cog in the industry's machine. (Welcome to the Machine)*. 
+"Freedom" of will is identified by the inverse of a posterior compoarison between an agent's desires and reality. Ex: *I want to be free. -> You must not be where you want to be. The rock star feels free even though he is a cog in the industry's machine. (Welcome to the Machine)*. I consider this subjective freedom.
 
 ## 4 September 2020
 
-The brain acts to maximize its entropy too. However, this entropy is a function of disconnected neurons. Large ensembles -> few microstates. The entropic force of the brain's joint distribution maintains local energy gradients/entropy minima such as ion gradiants. The brain then bcomes a maximum entropy model of its environment as gaussian processes are of their dataset. 
+Read and reflected on [*Towards a statistical mechanics of consciousness: maximization of number of connections is associated with conscious awareness*](https://arxiv.org/abs/1606.00821) Although operating on a free energy minimization, the brain acts to maximize its entropy. I realized the entropy or self-information is inversely related to energy. However, this entropy is a function of disconnected neurons. Large ensembles -> few microstates. The entropic force of the brain's joint distribution maintains local energy gradients/entropy minima such as ion gradiants. The brain then bcomes a maximum entropy model of its environment as gaussian processes are of their dataset.
+
+I noted that the Bayesian brain theory makes a sort of inverse model policy following its maximum entropy predictions of environmental state.
+
+## 3 September 2020
+
+Reading *Spinning Up: SAC*, maximum entropy action is about the least environmental influence. Internally, the agent minimizes entropy.
 
 ## 11 August 2020
 
