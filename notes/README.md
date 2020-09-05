@@ -2,7 +2,7 @@
 
 ## 5 September 2020
 
-
+Using multiple nodes extracting distinct feature spaces of the ground observation circumvents the multilabel normalization problem from [Subjectivity Learning Theory towards Artificial General Intelligence](https://arxiv.org/abs/1909.03798)
 
 After reading the headlines on gpt3 standing in between narrow and general ai, I note: **the question is not is it general intelligence, but how general is its intelligence?** There is large intelligence variation within the human spectrum (though still striking even in the lower quartile)
 
