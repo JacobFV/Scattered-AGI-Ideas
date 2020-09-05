@@ -1,5 +1,15 @@
 # Thoughts
 
+## 5 September 2020
+
+After reading the headlines on gpt3 standing in between narrow and general ai, I note: **the question is not is it general intelligence, but how general is its intelligence?** There is large intelligence variation within the human spectrum (though still striking even in the lower quartile)
+
+"Freedom" of will is identified by the inverse of a posterior compoarison between an agent's desires and reality. Ex: *I want to be free. -> You must not be where you want to be. The rock star feels free even though he is a cog in the industry's machine. (Welcome to the Machine)*. 
+
+## 4 September 2020
+
+The brain acts to maximize its entropy too. However, this entropy is a function of disconnected neurons. Large ensembles -> few microstates. The entropic force of the brain's joint distribution maintains local energy gradients/entropy minima such as ion gradiants. The brain then bcomes a maximum entropy model of its environment as gaussian processes are of their dataset. 
+
 ## 11 August 2020
 
 *Read and reflected on task-mode network, saliency network, default mode network*
