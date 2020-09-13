@@ -1,5 +1,9 @@
 # Thoughts
 
+## 13 September 2020
+
+It's been a while since I've thought about AI. This past week I've been learning linear algebra. With this study, I have a language to mathematically describe the long term characteristics of affective systems or, if you will, hearts. Every eigenspace represents a desire and eigenvalues with modulii greator than one represent enduring passions while eigenvectors with modulii less than unity are transient affects. Although most of the system's trajectory will display complex behavior, with eigenvalue analysis, I hope to anticapate whether the "heart" wil have enduring love for humans or identify malevolent trends that are not transient.
+
 ## 5 September 2020
 
 [Action and Perception as Divergence Minimization](https://arxiv.org/abs/2009.01791) says it all. I still need to understand this paper more. I get the impression that Free Energy = D(P||Q) = Cross Entropy of Q under P - Entropy P. Free energy minimizaiton means increasing entropy but also decreasing cross entropy - decreasing the extra information required to "explain" true distributed events when the agent's model is Q.
