@@ -1,5 +1,11 @@
 # Thoughts
 
+## 20 September 2020
+
+This week has been busy. Dr. Parks believes "The essence of intelligence is hierarchical prediction of vector sequence.
+
+We conjecture that the essence of the intelligence is a hierarchical prediction.The essence of intelligence is hierarchical prediction of vector sequence. We conjecture that the essence of the intelligence is a hierarchical prediction." He quotes a statement "given the proper environment, if the agent can learn language, we say it has a capability for human-like artificial intelligence." I agree: learning to understand human language opens the door to understanding all the higher human concepts that can then be expressed in language (upon query to human if the system does not already understand).
+
 ## 13 September 2020
 
 It's been a while since I've thought about AI. This past week I've been learning linear algebra. With this study, I have a language to mathematically describe the long term characteristics of affective systems or, if you will, hearts. Every eigenspace represents a desire and eigenvalues with modulii greator than one represent enduring passions while eigenvectors with modulii less than unity are transient affects. Although most of the system's trajectory will display complex behavior, with eigenvalue analysis, I hope to anticapate whether the "heart" wil have enduring love for humans or identify malevolent trends that are not transient.
