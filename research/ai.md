@@ -2,6 +2,55 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [A Review of Personality in Human‒Robot Interactions](https://arxiv.org/abs/2001.11777)
+  > Why is analyzing personality important? "Theories of personality assert that individual human traits can be used to predict human emotions, cognitions and behaviors [...] “Personality traits” is a label to describe a specific set of characteristics that are believed to be the best predictors of an individual’s behavior"
+  - give the robot a fitting personality for its role
+  - important for "enjoyment, empathy, intelligence, social attraction, credibility and trust, perceived performance, and compliance"
+  - personailty builds social connections
+  - many physical robotic and behavioral properties affect personailty
+  - general findings:
+  > 1. Extraverts seem to respond more favorably when interacting with robots.
+  > 2. Varying the robots behavior and vocal cues can invoke an extraverted personality.
+  > 3. Humans respond more favorably to extravert-type robots, but this relationship is moderated.
+  > 4. Humans respond favorably to robots with similar or different personalities from them.
+  - considerations:
+  1. include context in consideration
+  2. get out of the lab
+  3. try new tasks (a different task distribution)
+  4. Big five isn't the only set of psychometrics
+
+- :star:[THE NEXT BIG THING(S) IN UNSUPERVISED MACHINE LEARNING: FIVE LESSONS FROM INFANT LEARNING](https://arxiv.org/abs/2009.08497)
+  1) "Babies’ information processing is guided and constrained from birth"
+    - its okay to be feature engineer
+  2) "Babies are learning statistical relations across diverse inputs"
+    - eg: visual information serves as tiebreaker for otherwise impossible to distinguish audio inputs
+    - even for SL tasks, carry some of the higher weights (theoretically processing more abstract information) over from different modalities
+  3) "Babies’ input is scaffolded in time"
+    - the effect of the "stability/plasticity dilemma" are *critical learning periods* and *catastrophic interference*.
+  4) "Babies actively seek out learning opportunities"
+    - arousal homeostasis: not too boring nor too alarming
+    - effict: interested in familiar things until they are encoded sufficently, then attention shifts to novel things
+  5) "Babies learn from other agents"
+    - parents provide semi-suervised training
+    - fellow babies promote social understanding
+  - traditional machine learning has a lot of work to do. MADRL seems the way to go.
+
+- [GRAC: Self-Guided and Self-Regularized Actor-Critic](https://arxiv.org/abs/2009.08973)
+  - involved approach to combatting Q-value overestimation
+  - take the best Q function actions, increase their likelihood on the policy, sample an action + alot of regularization like TRPO 
+
+- [HTMRL: Biologically Plausible Reinforcement Learning with Hierarchical Temporal Memory](https://arxiv.org/pdf/2009.08880.pdf)
+  - echoes of Jeff Hinton's work on sparse distributed representations and prediction.
+  - draws attention to normalized (x-mu)/sigma reward instead of raw reward 
+
+- [RLzoo](https://github.com/tensorlayer/RLzoo)
+  - tf2 rl zoo
+
+- [DECOUPLING REPRESENTATION LEARNING FROM REINFORCEMENT LEARNING](https://arxiv.org/abs/2009.08319)
+  > In an effort to overcome limitations of reward-driven feature learning in deep reinforcement learning (RL) from images, we propose decoupling representation
+learning from policy learning.
+  - :star: They use intrinsic motivation for feature learning (perhaps described by section 3.3 of "Action and Perception as Divergence Minimization") while using extrinsic motivation for RL
+
 - [A Neural-Symbolic Framework for Mental Simulation](https://arxiv.org/abs/2008.02356)
   - __TO READ__
 
