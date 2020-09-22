@@ -1,10 +1,20 @@
 # Thoughts
 
+## 22 September 2020
+
+Superintelligence poses threats of goal drift and erroneous autonomous goal shaping. I might use 'parent' AI's to guide 'child' AI's toward human-friendly behavior while not directly hacking the child AI's reward function.
+
+If I can't build a computer inside TDW, I might make one of the doorways lead to a computer world where the agent's actuators a diectly applied to mouse and keyboard and sensors directly to screen and audio.
+
+Information DNN neuron regularization penalizes the difference between marginal mutual information between neurons and the mutual information of activations/weight sums when conditioned on a particular multinomial class. (I will need to adopt a differential metric) This teaches me to look for the information theoretic foundations behind 'intuitive' yet actually limited concepts as weight divergence. 
+
+## 21 September 2020
+
+Babies learn by building their own cirriculum and recieving semisupervised training. All learning experiences are grounded in time and must be timed at critical moments of development (contrast gpt3 which was stained by biased content). 
+
 ## 20 September 2020
 
-This week has been busy. Dr. Parks believes "The essence of intelligence is hierarchical prediction of vector sequence.
-
-We conjecture that the essence of the intelligence is a hierarchical prediction.The essence of intelligence is hierarchical prediction of vector sequence. We conjecture that the essence of the intelligence is a hierarchical prediction." He quotes a statement "given the proper environment, if the agent can learn language, we say it has a capability for human-like artificial intelligence." I agree: learning to understand human language opens the door to understanding all the higher human concepts that can then be expressed in language (upon query to human if the system does not already understand).
+This week has been busy. Dr. Parks believes "The essence of intelligence is hierarchical prediction of vector sequence." He quotes a statement "given the proper environment, if the agent can learn language, we say it has a capability for human-like artificial intelligence." I agree: learning to understand human language opens the door to understanding all the higher human concepts that can then be expressed in language (upon query to human if the system does not already understand).
 
 ## 13 September 2020
 
