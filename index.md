@@ -5,4 +5,3 @@ open research to all benevolent agents
 - [meditating on ai](meditating-on-ai)
 - [arxiv notes](arxiv-notes)
 - [dev platforms](dev-platforms)
-- [playground](playground)
