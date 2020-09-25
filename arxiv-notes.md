@@ -2,6 +2,34 @@
 
 Some relevant articles that I will apply towards AGI
 
+## Papers I need to read:
+- [Text Modular Networks: Learning to Decompose Tasks in the Language of Existing Models](https://arxiv.org/abs/2009.00751)
+- [Second-order Neural Network Training Using Complex-step Directional Derivative](https://arxiv.org/abs/2009.07098)
+- [Naive Artificial Intelligence](https://arxiv.org/abs/2009.02185)
+- [Continual Prototype Evolution: Learning Online from Non-Stationary Data Streams](https://arxiv.org/abs/2009.00919)
+- [Theory of Mind with Guilt Aversion Facilitates Cooperative Reinforcement Learning](https://arxiv.org/abs/2009.07445)
+- [Presentation and Analysis of a Multimodal Dataset for Grounded LanguageLearning](https://arxiv.org/abs/2007.14987)
+- [Goal-Aware Prediction: Learning to Model What Matters](https://arxiv.org/abs/2007.07170)
+- [Tracking Emotions: Intrinsic Motivation Grounded on Multi-Level Prediction Error Dynamics](https://arxiv.org/abs/2007.14632)
+- [DynamicEmbedding: Extending TensorFlow for Colossal-Scale Applications](https://www.arxiv-vanity.com/papers/2004.08366/)
+- [Motivation and emotion Textbook](https://en.m.wikiversity.org/wiki/Motivation_and_emotion/)
+- [Scale-Localized Abstract Reasoning](https://arxiv.org/abs/2009.09405)
+- [From Static to Dynamic Node Embeddings](https://arxiv.org/abs/2009.10017)
+- [Hierarchical Affordance Discovery using Intrinsic Motivation](https://arxiv.org/abs/2009.10968)
+- [X-LXMERT: Paint, Caption and Answer Questions with Multi-Modal Transformers](https://arxiv.org/abs/2009.11278)
+- [Message Passing for Hyper-Relational Knowledge Graphs](https://arxiv.org/abs/2009.10847)
+- [Fuzzy Simplicial Networks: A Topology-Inspired Model to Improve Task Generalization in Few-shot Learning](https://arxiv.org/abs/2009.11253)
+- [Lifelong Learning Dialogue Systems: Chatbots that Self-Learn On the Job](https://arxiv.org/abs/2009.10750)
+- [The Illustrated SimCLR Framework](https://amitness.com/2020/03/illustrated-simclr/)
+- [An AGI with Time-Inconsistent Preferences](https://arxiv.org/abs/1906.10536)
+- [Towards Graph Representation Learning in Emergent Communication](https://arxiv.org/abs/2001.09063)
+- [The Tensor Brain: Semantic Decoding for Perception and Memory](https://arxiv.org/abs/2001.11027)
+- [A Machine Consciousness architecture based on Deep Learning and Gaussian Processes](https://arxiv.org/abs/2002.00509)
+- [Goal-Directed Planning for Habituated Agents by Active Inference Using a Variational Recurrent Neural Network](https://arxiv.org/abs/2005.14656)
+- [Wave Propagation of Visual Stimuli in Focus of Attention](https://arxiv.org/abs/2006.11035)
+- [Graph Policy Network for Transferable Active Learning on Graphs](https://arxiv.org/abs/2006.13463)
+
+
 - [Latent representation prediction networks](https://arxiv.org/abs/2009.09439)
   - learn representations that maximize prediction rollout accuracy instead of minimizing reconstructive loss
 

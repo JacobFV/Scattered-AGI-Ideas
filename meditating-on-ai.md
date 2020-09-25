@@ -1,5 +1,15 @@
 # Meditating on AI
 
+## 25 September 2020
+
+As [A Hierarchical Multi-task Approach for Learning Embeddings from Semantic Tasks](https://arxiv.org/abs/1811.06031) shows, deeper layers extract more abstract features.
+
+## 24 September 2020 
+
+It's hard to get an objective metric for AGI safety performance. With the orthogonal thesis, however, if we find a 'safety' metric, benevolent AGI may not be intractable. As I was learning about the way [SimCLR](https://amitness.com/2020/03/illustrated-simclr/) trains on the harder examples, it reminded me of a metalearner trying to minimize free energy. The AGI might simply be designed to minimize fre energy and human safety evaluations are one of the metrics it seeks to minimize uncertainty with respect to. Note: the divergence minimization principle looks to maintain niches, not necesarily minimize surprise, so I will need to hack this part of the feature space to expect positive evaluations.  - or I could have other agents, perhaps even other AGI's work to get the most conclusive human ratings on the AGI of focus.
+
+Perhaps word embedding debiasing can also be applied to imitaiton learning while modeling attitudes after highly filtered role models. It may be that humans can engineer much of the animalistic qualities out of AGI agents. However, with agents that big, even marginal mistakes will touch a lot of individuals, so there is still no time to relax.
+
 ## 22 September 2020
 
 Superintelligence poses threats of goal drift and erroneous autonomous goal shaping. I might use 'parent' AI's to guide 'child' AI's toward human-friendly behavior while not directly hacking the child AI's reward function.
