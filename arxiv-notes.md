@@ -2,6 +2,12 @@
 
 Some relevant articles that I will apply in my RL systems
 
+- [Latent representation prediction networks](https://arxiv.org/abs/2009.09439)
+  - learn representations that maximize prediction rollout accuracy instead of minimizing reconstructive loss
+
+- [Entropy, Computing and Rationality](https://arxiv.org/abs/2009.10224)
+  > Making decisions freely presupposes that there is some indeterminacy in the environment and in the decision making engine [. . .] Memory, perception, action and thought involve a level of indeterminacy and decision making may be free in such degree. 
+
 - [A Review of Personality in Human‒Robot Interactions](https://arxiv.org/abs/2001.11777)
   > Why is analyzing personality important? "Theories of personality assert that individual human traits can be used to predict human emotions, cognitions and behaviors [...] “Personality traits” is a label to describe a specific set of characteristics that are believed to be the best predictors of an individual’s behavior"
   - give the robot a fitting personality for its role
@@ -246,5 +252,25 @@ https://arxiv.org/abs/1812.01054
 
 **This means new modules should be born where they may be least specialized but have fasted mean predicted convergence speed**
 
+- [Approximate Simulation for Template-Based Whole-Body Control](https://arxiv.org/abs/2006.09921)
+  - don't model your robot with templates (double inverted pendulum) but model the real deal. This requires less parameter tuning
+  - mathematical formulation for humanoid kinematics
+
+- [If I Hear You Correctly: Building and Evaluating Interview Chatbots with Active Listening Skills](https://arxiv.org/abs/2002.01862)
+
+- [ON THE INTERACTION BETWEEN SUPERVISION AND SELF-PLAY IN EMERGENT COMMUNICATION](https://arxiv.org/abs/2002.01093)
+  > first training agents via supervised learning on human data followed by self-play outperforms the converse, suggesting that it is not beneficial to emerge languages from scratch. \[. . .\] population based approaches to S2P [supervised self-play] further improves the performance over single-agent methods.
+  
+- [EgoMap: Projective mapping and structured egocentric memory for Deep RL](https://arxiv.org/abs/2002.02286)
+  - builds grid of memory embeddings as agent travels
+  
+
 - [Mind Your Manners! A Dataset and A Continual Learning Approach for Assessing Social Appropriateness of Robot Actions](https://arxiv.org/abs/2007.12506)
   - dataset of robot action appropriatenes
+
+[FinTech](https://arxiv.org/pdf/2007.12681.pdf)
+[From Robotic Process Automation to Intelligent Process Automation](https://arxiv.org/abs/2007.13257)
+  - general overview of IPA
+[A Conversational Digital Assistant for Intelligent Process Automation](https://arxiv.org/abs/2007.13256)
+  - many same authors from above
+  - combination of IPA + RPA
