@@ -22,7 +22,7 @@ It's been a while since I've thought about AI. This past week I've been learning
 
 ## 5 September 2020
 
-[Action and Perception as Divergence Minimization](https://arxiv.org/abs/2009.01791) says it all. I still need to understand this paper more. I get the impression that Free Energy = D(P||Q) = Cross Entropy of Q under P - Entropy P. Free energy minimizaiton means increasing entropy but also decreasing cross entropy - decreasing the extra information required to "explain" true distributed events when the agent's model is Q.
+[Action and Perception as Divergence Minimization](https://arxiv.org/abs/2009.01791) says it all. I still need to understand this paper more. I get the impression that Free Energy = D(P\|\|Q) = Cross Entropy of Q under P - Entropy P. Free energy minimizaiton means increasing entropy but also decreasing cross entropy - decreasing the extra information required to "explain" true distributed events when the agent's model is Q.
 
 Using multiple nodes extracting distinct feature spaces of the ground observation circumvents the multilabel normalization problem from [Subjectivity Learning Theory towards Artificial General Intelligence](https://arxiv.org/abs/1909.03798)
 
