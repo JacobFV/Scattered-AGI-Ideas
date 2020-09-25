@@ -1,3 +1,7 @@
+# Dev Platforms
+
+Various potential 'incubators' for AGI.
+
 ## General
 
 - https://openai.com/resources/ This includes Microscope which lets you view the attention patterns of a convolutional neural network.

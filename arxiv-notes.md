@@ -1,6 +1,6 @@
-# Research
+# arxiv-notes
 
-Some relevant articles that I will apply in my RL systems
+Some relevant articles that I will apply towards AGI
 
 - [Latent representation prediction networks](https://arxiv.org/abs/2009.09439)
   - learn representations that maximize prediction rollout accuracy instead of minimizing reconstructive loss

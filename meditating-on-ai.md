@@ -1,4 +1,4 @@
-# Thoughts
+# Meditating on AI
 
 ## 22 September 2020
 
