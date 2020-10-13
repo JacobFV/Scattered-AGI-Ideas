@@ -1,5 +1,9 @@
 # Meditating on AI
 
+## 12 October 2020
+
+What if my ASI was on public display? While only a few could "control" it, its actions would be viewable for everyone on the internet.
+
 ## 7 October 2020
 
 I've been reading a lot about the brain recently. I will write more about that soon. Essentially, it's about sheep and wolves (and hunters) routing information. Thinking directly in terms of information, I imagine conservative energy/information loops flowing from the brain through the environment back into the brain. The mind attenmpts to minimize free energy by dissipating it as entropy or expelling/diverting information to subcircuits and the environment. At the same time, the environment produces energy/information that the brain works to minimize. Excitatory neurons route information, while inhibitory neurons *kind of* block information flow. 
