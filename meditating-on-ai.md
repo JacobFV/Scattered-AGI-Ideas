@@ -1,5 +1,9 @@
 # Meditating on AI
 
+## 14 October 2020
+
+The dopaminergic reward system not only predicts reward, but also seems to predict proximity to reward. Using the proximity to reward administered by the meso limbic system, the brain gets a sort of mentor in determining which actions to take. That mentor intern bias is learning to take place faster closer to reward, so that exponentially larger amounts of training weight is put close to rewards. Then unsupervised Lauren favors consistent trajectories which now have a higher weight of going towards the rewards state
+
 ## 13 October 2020
 
 Superintelligence is the next step. I don't see why multiple totally benevolent ASI's would be a problem. However, they should reliably use their superintelligence to serve as gatekeepers of their niche.
