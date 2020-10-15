@@ -1,9 +1,15 @@
 # Meditating on AI
 
+## 15 October 2020
+
+Talking with my brother, he explained conscious representation as situating a thought between thought "extrema". These "extrema" are the foremost concrete instantiations of the thought they represent perhaps forming a new dimensional basis for later thoughts to rest on.
+
+After reviewing yesterday's thoughts, I realize it would be useful to AGI to not only weight evidence for positive but also negative stimulii. The agent propperly trained under a few negative reinforcement trials should never again return to that aversive state to unlearn the association – even if the stimulii is gone. System 2 may ackowledge that there is no danger, but System 1 which provides most of the motivation force 'knows' otherwise and remains afraid. (System 1 knows from experience; System 2 *knows about*) This, in addition to accelerated training under expected positive or negitive can bias unsupervised APD minimization (habituated) learning.
+
 ## 14 October 2020
 
-The dopaminergic reward system not only predicts reward, but also seems to predict proximity to reward. Using the proximity to reward administered by the meso limbic system, the brain gets a sort of mentor in determining which actions to take. That mentor intern bias is learning to take place faster closer to reward, so that exponentially larger amounts of training weight is put close to rewards. Then unsupervised Lauren favors consistent trajectories which now have a higher weight of going towards the rewards state
-
+The dopaminergic reward system not only predicts reward, but also seems to predict proximity to reward. Using the proximity to reward administered by the meso limbic system, the brain gets a sort of mentor in determining which actions to take. That mentor intern bias is learning to take place faster closer to reward, so that exponentially larger amounts of training weight is put close to rewards. Then unsupervised learning favors consistent trajectories which now have a higher weight of going towards the rewards state
+
 > It is largely through selective reinforcement of initially random movements, that the behavior of the neonate comes to be both directed at and motivated by appropriate stimuli in the environment [49]. For the most part, one's motivation is to return to the rewards experienced in the past, and to the cues that mark the way to such rewards. It is primarily through its role in the selective reinforcement of associations between rewards and otherwise neutral stimuli that DA is important for such motivation. Once stimulus-reward associations have been formed, they can remain potent for some time even after the reward has been devalued [. . .] Once a habit has been established, it remains largely autonomous until the conditioned significance of incentive motivational stimuli has been extinguished or devalued through experience. Extinction of the conditioned significance of such stimuli can result from repeated unrewarded trials, repeated trials in the absence of an appropriate drive state, or repeated trials under the influence of neuroleptics ([Dopaminergic reward system: a short integrative review](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2958859/#__ffn_sectitle))
 
 The olfactory tubercle in the brain serves as a multimodal sensory integration hotspot and terminates some reward pathways.
