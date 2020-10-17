@@ -1,5 +1,13 @@
 # Meditating on AI
 
+## 17 October 2020
+
+Applying energy minimiztion or predictive coding to social communication and behavior, an agent should optimize its behavior to require the least prodding from others. They should also use even imagination to optimize this.
+
+On imagination, module(s) should have the capability to "detatch from reality" - that is, produce output response that are not correlated with the inputs in the module has a sufficently strong belief about the latent variables it transmits that it is willing to ignore ground truth. The effect of this could be imagination if the latent variable loses quarrelation with previous activity.
+
+After lunch today, I will write down my theory of modular information.
+
 ## 16 October 2020
 
 OpenAI's concept of [circuits](https://distill.pub/2020/circuits/zoom-in/) seems related to my brother's thought of "extrema" precepts.
