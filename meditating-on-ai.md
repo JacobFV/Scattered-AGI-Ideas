@@ -1,5 +1,13 @@
 # Meditating on AI
 
+## 18 October 2020
+
+Broaden and build theory posits positive emotions to facilitate exploration and increase long-term outcomes while negative emotions encourage shortsighted optimization. Both play a key role in survival which must consider immediate and distant outcomes. However, it motivates me to consider whether positive emotions additionally optimize a totally different objective altogethor. **We're excluding a spectrum of optimization with the very notion of a *loss* function or *survival*-based optimization.** There appear to be higher-order objectives of positive emotions. If the reward system primes cortical activity by lowering the action potential threshold, then perhaps negative emotions do the opposite. There is no room for chronic negative emotion in optimal behavior. In my theory of information flow, positive emotions increase conductivity while negative emotions increase resistivity.
+
+The generally weak and transient effect of physical interaction on holistic emotional assessment seems to discredit extrinsic rewards. Perhaps this serves to avert spurrious local optimization in behavior policies. While the brains reward system seems to subconsciously perform decently at emotional regulation, the conscious mind is often poor at imagining behavior-consequent transient affective states. Let System I maintain homeostasis while System II processes optimizes  objectives rationally. The hedonic tredmill can only consciously optimize with known dynamics, but it is the unanticipated, the novel rewards that stimulate our reward system. Modeling the human reward system as an advantage function then should take environmental conditions into account when giving the internal value of an external reward.
+
+Briefly reading psychological literature on emotions convinces me that there are no knobs or raw parameters to emotional state. Though it could be *modeled* by examining an agent's cognitive and environmental processes, we can only hope to *influence* the nondetirministic property.
+
 ## 17 October 2020
 
 Applying energy minimiztion or predictive coding to social communication and behavior, an agent should optimize its behavior to require the least prodding from others. They should also use even imagination to optimize this.
