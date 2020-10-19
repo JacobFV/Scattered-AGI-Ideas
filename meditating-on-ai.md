@@ -1,5 +1,13 @@
 # Meditating on AI
 
+## 19 October 2020
+
+To make the relationship bidirectional, System I learn policies from System II, while System II learns goals from System I's interpretation of the agent's own body and environment.
+
+*Rythyms of the Brain* credits gamma oscillations largely to the shared GABAa interneuron depolarizaiton refactory time that allows synchrony to be established across region-specific and whole-brain interneuronal networks. Importantly, no particular excitatory synapse is responsible for activating the basket and chandelier interneurons, however there are usually sufficently many dendrites to reach the action potential. Unchecked, self-organizing internal gamma oscillations can spread throughout the brain to bind many cortical areas. Internal synchrony may be interrupted by external regular or irregular stimuli preventing full brain gamma oscillations from being realized. However, regular external interruptions can drive a 'forced oscillation'. Experiments show that the brief stimulation of a cortical neuron leads to the subject being aware of a touch, but trains of activity are required to 'feel' the sensation. This leads to the conclusion that 'feelings' are system dynamics that share trajectories with high mutual information across diverse regions of the cortex.
+
+Given both perceptions of the former experiment were percieved, I don't directly tie consciousness to binding, but it may have a pivotal role. And on 'binding': this discussion from *Rythyms of the Brain* indicates that binding need not be indentified in any one gnostic neuron or feature, but rather, the temporal trajectory of the system. I believe this implies: **don't use embeddings, leave data in sequence form**.
+
 ## 18 October 2020
 
 Broaden and build theory posits positive emotions to facilitate exploration and increase long-term outcomes while negative emotions encourage shortsighted optimization. Both play a key role in survival which must consider immediate and distant outcomes. However, it motivates me to consider whether positive emotions additionally optimize a totally different objective altogethor. **We're excluding a spectrum of optimization with the very notion of a *loss* function or *survival*-based optimization.** There appear to be higher-order objectives of positive emotions. If the reward system primes cortical activity by lowering the action potential threshold, then perhaps negative emotions do the opposite. There is no room for chronic negative emotion in optimal behavior. In my theory of information flow, positive emotions increase conductivity while negative emotions increase resistivity.
