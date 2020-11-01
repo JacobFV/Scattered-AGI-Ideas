@@ -1,5 +1,9 @@
 # Meditating on AI
 
+## 1 November 2020
+
+I propose to use a rainbow melting pot of many motivational psychological techniques in AGI development.
+
 ## 19 October 2020
 
 To make the relationship bidirectional, System I learn policies from System II, while System II learns goals from System I's interpretation of the agent's own body and environment.
