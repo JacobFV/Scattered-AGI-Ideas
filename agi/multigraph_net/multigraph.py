@@ -1,6 +1,7 @@
 import tensorflow as tf
 keras = tf.keras
 tfkl = keras.layers
+K = keras.backend
 
 class Multigraph:
 
@@ -95,3 +96,11 @@ class Multigraph:
             self.Es[rel] = tf.tile(tf.expand_dims(E, axis=0), tf.constant([batch_size, 1, 1, 1]))
         for rel, A in self.As.items():
             self.As[rel] = tf.tile(tf.expand_dims(A, axis=0), tf.constant([batch_size, 1, 1]))
+
+    def make_keras_compat(self):
+        for g, V in self.Vs.items():
+            self.Vs[g] = K.variable(V)
+        for rel, E in self.Es.items():
+            self.Es[rel] = K.variable(E)
+        for rel, A in self.As.items():
+            self.As[rel] = K.variable(A)

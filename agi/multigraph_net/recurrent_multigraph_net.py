@@ -3,25 +3,11 @@ tf.config.set_visible_devices([], 'GPU')
 keras = tf.keras
 tfkl = keras.layers
 
-from .graph_net import GraphNet
-from .multigraph import Multigraph
-from .multigraph_net import MultigraphNet
+from graph_net import GraphNet
+from multigraph import Multigraph
+from multigraph_net import MultigraphNet
 
-def make_multigraph_net_recurrent(multigraph_net, T, d_in):
-    """
-    cell_model: x, multigraph -> y, multigraph'
-    """
-    inputs = tfkl.Input((T,d_in))
-    multigraph = multigraph_net.multigraph_template
-    outputs = []
-    for t in tf.range(T):
-        output, multigraph = multigraph_net(inputs[T], multigraph)
-        outputs.append(output)
-
-    outputs = tfkl.concatenate(outputs)
-    return keras.Model(inputs=inputs, outputs=outputs)
-
-def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8):
+def dense_to_dense_multigraph_net(d_in, d_out, B, N_v=64, d_v=16, d_e=8):
     """convenience initializer for MHA graph RNN with dense input and output
     This layer actually uses python code to process time steps, but it sandwhiches
     that between input and output keras tensors
@@ -48,6 +34,7 @@ def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d
         N_v=1,
         d_v=d_out)
     multigraph.batch_size_multigraph(B)
+    # multigraph.make_keras_compat()
     multigraph_net = MultigraphNet(
         multigraph_template=multigraph,
         f_rel_update={
@@ -87,7 +74,26 @@ def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d
             ("cell", "out")]),
         f_ret=MultigraphNet.f_ret_just_root("out"))
 
-    recurrent_multigraph_net = make_multigraph_net_recurrent(multigraph_net, T, d_in)
+    return multigraph_net
+
+def make_dense_to_dense_multigraph_net_recurrent(multigraph_net, T, d_in):
+    """
+    cell_model: x, multigraph -> y, multigraph'
+    """
+    input_layer = tfkl.Input((T,d_in))
+    inputs = tfkl.Lambda(lambda x: tf.unstack(value=x, axis=1))(input_layer)
+    multigraph = multigraph_net.multigraph_template
+    outputs = []
+    for t in tf.range(T):
+        output, multigraph = multigraph_net(inputs[t], multigraph)
+        outputs.append(output)
+
+    output_layer = tfkl.concatenate(outputs, axis=1)
+    return keras.Model(inputs=input_layer, outputs=output_layer)
+
+def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8):
+    multigraph_net = dense_to_dense_multigraph_net(d_in, d_out, B, N_v, d_v, d_e)
+    recurrent_multigraph_net = make_dense_to_dense_multigraph_net_recurrent(multigraph_net, T, d_in)
     return recurrent_multigraph_net
 
 
@@ -95,14 +101,28 @@ d_in=24
 d_out=32
 B = 4
 T = 20
+
 X = 1.4 + 2*tf.random.normal((B,T,d_in))
 Y_true = tf.reduce_sum(X, axis=1)
-Y_true = Y_true #+ 1e-3*tf.random.normal((B,32))
 
+mgnet = dense_to_dense_multigraph_net(
+    d_in=d_in, d_out=d_out, B=B)
+
+y_pred = []
+multigraph = mgnet.multigraph_template
+for t in range(T):
+    output, multigraph = mgnet(X[:,t,:], multigraph)
+    y_pred.append(output)
+
+Y_pred = tf.stack(y_pred, axis=1)
+print(Y_pred)
+tf.print(Y_pred[0])
+
+"""
 recurrent_multigraph_net = dense_to_dense_recurrent_multigraph_net(
     d_in=d_in, d_out=d_out, B=B, T=T)
 Y_pred = recurrent_multigraph_net(X)
-print(Y_pred)
+print(Y_pred)"""
 
 """model = keras.Sequential()
 model.add(tfkl.Input((T,d_in)))

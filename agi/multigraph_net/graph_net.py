@@ -101,11 +101,13 @@ class GraphNet(keras.Model):
             self.f_key = tfkl.Dense(self.N_heads * self.d_key, 'relu')
             self.f_query = tfkl.Dense(self.N_heads * self.d_key, 'relu')
 
-            self.reshape_q = tfkl.Reshape(V_dst_shape[:-2] +
+            shape = (V_dst_shape[:-1] + # (4, 64, 8, 8) (B, N_dst, N_head, d_key)
                                           (self.N_heads, self.d_key))
-            self.reshape_k = tfkl.Reshape(inp_shape[:-2] +
+            self.reshape_q = tfkl.Reshape(V_dst_shape[:-1] +
                                           (self.N_heads, self.d_key))
-            self.reshape_v = tfkl.Reshape(inp_shape[:-2] +
+            self.reshape_k = tfkl.Reshape(inp_shape[:-1] +
+                                          (self.N_heads, self.d_key))
+            self.reshape_v = tfkl.Reshape(inp_shape[:-1] +
                                           (self.N_heads, self.d_val))
 
             def _f_MHA(queries, keys, values):
@@ -122,9 +124,8 @@ class GraphNet(keras.Model):
         def call(self, inputs, training=False):
             # unpack inputs
             V_dst, inp = inputs
-            print('f_pool_attn:', self.name,
-                  'V_dst', V_dst.shape,
-                  'inp', inp.shape)
+            # inp: [B, N_dst, N_src, d_e+d_vsrc]
+            # V_dst: [B, N_dst, d_vdst]
 
             # pre-LN
             if self.pre_layer_normalization:
