@@ -1,4 +1,4 @@
-from multigraph import Multigraph
+from .multigraph import Multigraph
 
 import random
 
@@ -7,7 +7,8 @@ keras = tf.keras
 tfkl = keras.layers
 
 
-class MultigraphUpdateCell(tfkl.Layer):
+class MultigraphNet:
+    """This is a keras boilerplate class but not actually a keras model"""
 
     def __init__(self,
                  multigraph_template: Multigraph,
@@ -30,23 +31,16 @@ class MultigraphUpdateCell(tfkl.Layer):
         randomized_update_seq (bool): whether to randomize the order of (src,dst)
             relation updates.
         """
-        super(MultigraphUpdateCell, self).__init__(**kwargs)
+        self.multigraph_template = multigraph_template # useful for priming RNN states
         self.f_rel_update = f_rel_update
         self.f_inp = f_inp
         if f_update_seq is None:
-            f_update_seq = MultigraphUpdateCell.f_update_seq_egocentric
+            f_update_seq = MultigraphNet.f_update_seq_egocentric
         self.f_update_seq = f_update_seq
         self.f_ret = f_ret
         self.randomized_update_seq = randomized_update_seq
 
-        self.multigraph_state = multigraph_template
-        self.state_size = (1,)
-
-    def get_initial_state(self, inputs=None, batch_size=None, dtype=None):
-        return tf.zeros(self.state_size)
-
-    def call(self, input_at_t, states_at_t, training=False):
-        multigraph = self.multigraph_state
+    def call(self, input_at_t, multigraph, training=False):
 
         multigraph = self.f_inp(input_at_t, multigraph)
         for rel in self.f_update_seq(multigraph):
@@ -54,10 +48,10 @@ class MultigraphUpdateCell(tfkl.Layer):
             multigraph.V[dst], multigraph.E[rel], multigraph.A[rel] = \
                 self.f_rel_update[rel]([
                     multigraph.Vs[src], multigraph.Vs[dst],
-                    multigraph.Es[rel], multigraph.As[rel]])
+                    multigraph.Es[rel], multigraph.As[rel]],
+                    training=training)
 
-        self.multigraph_state = multigraph
-        return self.f_ret(multigraph), states_at_t
+        return self.f_ret(multigraph), multigraph
 
     @staticmethod
     class f_inp_update_root:
