@@ -45,14 +45,10 @@ class MultigraphNet:
         multigraph = self.f_inp(input, multigraph)
         for rel in self.f_update_seq(multigraph):
             src, dst = rel
-            V_src = multigraph.Vs[src]
-            V_dst = multigraph.Vs[dst]
-            E_rel = multigraph.Es[rel]
-            A_rel = multigraph.As[rel]
-            multigraph.V[dst], multigraph.E[rel], multigraph.A[rel] = \
+            multigraph.Vs[dst], multigraph.Es[rel], multigraph.As[rel] = \
                 self.f_rel_update[rel]([
                     multigraph.Vs[src], multigraph.Vs[dst],
-                    multigraph.Es[rel], multigraph.As[rel]]),
+                    multigraph.Es[rel], multigraph.As[rel]])
                     #training=training)
 
         return self.f_ret(multigraph), multigraph

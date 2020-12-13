@@ -59,9 +59,11 @@ class GraphNet(keras.Model):
 
         # update edges
         E = self.f_e_up([V_src_loc, V_dst_loc, E]) #, training=training)
+        # [..., N_src, N_dst, d_e]
 
         # update adjacency matrix
         A = self.f_adj_up(E) #, training=training)
+        # [..., N_src, N_dst]
 
         return V_dst, E, A
 
@@ -101,24 +103,23 @@ class GraphNet(keras.Model):
             self.f_key = tfkl.Dense(self.N_heads * self.d_key, 'relu')
             self.f_query = tfkl.Dense(self.N_heads * self.d_key, 'relu')
 
-            shape = (V_dst_shape[:-1] + # (4, 64, 8, 8) (B, N_dst, N_head, d_key)
+            self.reshape_q = tfkl.Reshape(V_dst_shape[1:-1] +
                                           (self.N_heads, self.d_key))
-            self.reshape_q = tfkl.Reshape(V_dst_shape[:-1] +
+            self.reshape_k = tfkl.Reshape(inp_shape[1:-1] +
                                           (self.N_heads, self.d_key))
-            self.reshape_k = tfkl.Reshape(inp_shape[:-1] +
-                                          (self.N_heads, self.d_key))
-            self.reshape_v = tfkl.Reshape(inp_shape[:-1] +
+            self.reshape_v = tfkl.Reshape(inp_shape[1:-1] +
                                           (self.N_heads, self.d_val))
 
-            def _f_MHA(queries, keys, values):
-                score = tf.einsum('...dhq,...dshq->dsh', queries, keys)
-                score = score / tf.sqrt(self.d_key)
+            def _f_MHA(inps):
+                queries, keys, values = inps
+                score = tf.einsum('...dhq,...dshq->...dsh', queries, keys)
+                score = score / self.d_key**0.5
                 score = tf.nn.softmax(score, axis=-1)
                 return tf.einsum('...dsh,...dshv->...dhv', score, values)
 
-            self.f_MHA = tfkl.Lambda(lambda q, k, v: _f_MHA(q, k, v))
+            self.f_MHA = tfkl.Lambda(lambda x: _f_MHA(x))
 
-            self.f_cat = tfkl.Reshape(V_dst_shape[:-1] + (self.N_heads*self.d_val,))
+            self.f_cat = tfkl.Reshape(V_dst_shape[1:-1] + (self.N_heads*self.d_val,))
             self.f_emb_cat = tfkl.Dense(V_dst_shape[-1], 'relu')
 
         def call(self, inputs, training=False):
@@ -139,6 +140,7 @@ class GraphNet(keras.Model):
 
             # reshape into separate heads
             queries = self.reshape_q(queries)  # [..., N_dst, N_heads, d_key]
+
             keys = self.reshape_k(keys)  # [..., N_dst, N_heads, d_key]
             values = self.reshape_v(values)  # [..., N_dst, N_heads, d_key]
 
@@ -148,6 +150,7 @@ class GraphNet(keras.Model):
 
             # concatenate heads
             mha_cat = self.f_cat(mha_lookup) #, training=training)
+            # [..., N_dst, N_heads*d_val]
 
             # embed in output space
             return self.f_emb_cat(mha_cat) #, training=training)
@@ -196,11 +199,12 @@ class GraphNet(keras.Model):
 
     @staticmethod
     def _f_adj_up():
-        def f(x):
-            y = tfkl.Dense(1, 'softmax')(x)
-            y = tf.squeeze(y)
-
-        return tfkl.Lambda(lambda E: f(E))
+        dense_layer = tfkl.Dense(1, 'softmax')
+        lambda_layer = tfkl.Lambda(lambda E: tf.squeeze(E, axis=-1))
+        def call_adj_up(x):
+            x = dense_layer(x)
+            return lambda_layer(x)
+        return call_adj_up
 
     @staticmethod
     def f_e_up_const():
@@ -270,7 +274,7 @@ class GraphNet(keras.Model):
 
             if self.pre_layer_normalization:
                 self.V_dst_LN = tfkl.LayerNormalization()
-                self.V_src_LN = tfkl.LayerNormalization()
+                self.inp_LN = tfkl.LayerNormalization()
                 self.E_LN = tfkl.LayerNormalization()
 
         def build(self, input_shape):
@@ -282,26 +286,28 @@ class GraphNet(keras.Model):
             self.cat_q_data = tfkl.Concatenate()
             self.cat_kv_data = tfkl.Concatenate()
 
-            self.f_val = tfkl.Dense(self.N_heads * self.d_val, 'relu')
-            self.f_key = tfkl.Dense(self.N_heads * self.d_key, 'relu')
-            self.f_query = tfkl.Dense(self.N_heads * self.d_key, 'relu')
+            self.f_query = tfkl.Dense(self.d_key, 'relu')
 
-            self.reshape_q = tfkl.Reshape(E_shape[:-1] +
+            self.f_key = tfkl.Dense(self.N_heads * self.d_key, 'relu')
+            self.f_val = tfkl.Dense(self.N_heads * self.d_val, 'relu')
+
+            self.reshape_k = tfkl.Reshape(E_shape[1:-1] +
                                           (self.N_heads, self.d_key))
-            self.reshape_k = tfkl.Reshape(E_shape[:-1] +
-                                          (self.N_heads, self.d_key))
-            self.reshape_v = tfkl.Reshape(E_shape[:-1] +
+            self.reshape_v = tfkl.Reshape(E_shape[1:-1] +
                                           (self.N_heads, self.d_val))
 
-            def _f_MHA(queries, keys, values):
-                score = tf.einsum('...sdhq,...sdhq->sdh', queries, keys)
-                score = score / tf.sqrt(self.d_key)
+            def _f_MHA(inps):
+                queries, keys, values = inps
+                score = tf.einsum('...sdq,...sdhq->...sdh', queries, keys)
+                score = score / self.d_key**0.5
                 score = tf.nn.softmax(score, axis=-1)
-                return tf.einsum('...sdh,...sdhv->...dhv', score, values)
+                return tf.einsum('...sdh,...sdhv->...sdv', score, values)
 
-            self.f_MHA = tfkl.Lambda(lambda q, k, v: _f_MHA(q, k, v))
+            self.f_MHA = tfkl.Lambda(lambda x: _f_MHA(x))
 
-            self.f_cat = tfkl.Reshape(E_shape[:-1] + (self.N_heads*self.d_val,))
+            self.f_cat = tfkl.Reshape(E_shape[1:-1] + (self.N_heads*self.d_val,))
+            # Input to reshape is a tensor with 32768 values, but the requested shape has 2097152 [Op:Reshape]
+            self._shp = E_shape[1:-1] + (self.N_heads*self.d_val,) # (64,64,128)
             self.f_emb_cat = tfkl.Dense(E_shape[-1], 'relu')
 
         def call(self, inputs, training=False):
@@ -314,29 +320,27 @@ class GraphNet(keras.Model):
                 V_src_loc = self.inp_LN(V_src_loc) #, training=training)
                 E = self.E_LN(E) #, training=training)
 
-            V_dst_loc_perm = self.V_dst_perm(V_dst_loc)
+            V_dst_loc_perm = self.V_dst_perm(V_dst_loc) # [..., N_src, N_dst, d_v]
 
-            q_data = self.cat_q_data([V_dst_loc_perm, E])
-            kv_data = self.cat_kv_data([V_src_loc, E])
+            q_data = self.cat_q_data([V_dst_loc_perm, E]) # [..., N_src, N_dst, d_v_dst + d_e]
+            kv_data = self.cat_kv_data([V_src_loc, E]) # [..., N_src, N_dst, d_v_src + d_e]
 
-            # generate queries, keys, and values for all heads
-            queries = self.f_query(q_data) #, training=training)  # [..., N_src, N_dst, N_heads*d_key]
+            # generate queries
+            queries = self.f_query(q_data) #, training=training)  # [..., N_src, N_dst, d_key]
+            # [..., N_src, N_dst, N_heads, d_key]
+
+            # generate multiple keys and values
             keys = self.f_key(kv_data) #, training=training)  # [..., N_src, N_dst, N_heads*d_key]
             values = self.f_val(kv_data) #, training=training)  # [..., N_src, N_dst, N_heads*d_val]
 
             # reshape into separate heads
-            queries = self.reshape_q(queries)  # [..., N_src, N_dst, N_heads, d_key]
             keys = self.reshape_k(keys)  # [..., N_src, N_dst, N_heads, d_key]
             values = self.reshape_v(values)  # [..., N_src, N_dst, N_heads, d_key]
 
             # perform multi-head attention
             mha_lookup = self.f_MHA([queries, keys, values]) #, training=training)
-            # [..., N_src, N_dst, N_heads, d_val]
-
-            # concatenate heads
-            mha_cat = self.f_cat(mha_lookup) #, training=training)
-            # [..., N_src, N_dst, N_heads*d_val]
+            # [..., N_src, N_dst, d_val]
 
             # embed in output space
-            return self.f_emb_cat(mha_cat) #, training=training)
+            return self.f_emb_cat(mha_lookup) #, training=training)
             # [..., N_src, N_dst, d_E]
