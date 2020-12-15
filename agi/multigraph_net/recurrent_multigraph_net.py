@@ -85,11 +85,13 @@ def make_dense_to_dense_multigraph_net_recurrent(multigraph_net, T, d_in):
     multigraph = multigraph_net.multigraph_template
     outputs = []
     for t in tf.range(T):
+        input_at_t = inputs[t]
         output, multigraph = multigraph_net(inputs[t], multigraph)
         outputs.append(output)
 
     output_layer = tfkl.concatenate(outputs, axis=1)
-    return keras.Model(inputs=input_layer, outputs=output_layer)
+    model = keras.Model(inputs=input_layer, outputs=output_layer)
+    return model
 
 def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8):
     multigraph_net = dense_to_dense_multigraph_net(d_in, d_out, B, N_v, d_v, d_e)
@@ -97,14 +99,18 @@ def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d
     return recurrent_multigraph_net
 
 
-d_in=24
-d_out=32
+d_in = 24
+d_out = 32
 B = 4
 T = 20
 
 X = 1.4 + 2*tf.random.normal((B,T,d_in))
-Y_true = tf.reduce_sum(X, axis=1)
+Y_true = X @ tf.random.uniform((d_in, d_out))
 
+rmgnet = dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8)
+Y_pred = mgnet(X)
+print(Y_pred)
+"""
 mgnet = dense_to_dense_multigraph_net(
     d_in=d_in, d_out=d_out, B=B)
 
@@ -115,8 +121,9 @@ for t in range(T):
     y_pred.append(output)
 
 Y_pred = tf.stack(y_pred, axis=1)
-print(Y_pred)
-tf.print(Y_pred[0])
+print(Y_pred) # (4, 20, 32)"""
+
+
 
 """
 recurrent_multigraph_net = dense_to_dense_recurrent_multigraph_net(

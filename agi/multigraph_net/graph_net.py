@@ -132,6 +132,9 @@ class GraphNet(keras.Model):
             if self.pre_layer_normalization:
                 V_dst = self.V_dst_LN(V_dst) #, training=training)
                 inp = self.inp_LN(inp) #, training=training)
+                # in2cell   (4, 64, 1, 25)  dv:24 de:1 | (4, 64, 1, 28) dv:24 de:4
+                # cell2cell (4, 64, 64, 24) dv:16 de:8 |
+                # cell2out  (4, 1, 64, 17)  dv:16 de:1 |
 
             # generate queries, keys, and values for all heads
             queries = self.f_query(V_dst) #, training=training)  # [..., N_dst, N_heads*d_key]
@@ -216,7 +219,8 @@ class GraphNet(keras.Model):
 
         def build(self, input_shape):
             V_src_loc_shape, V_dst_loc_shape, E_shape = input_shape
-            self.f_E_new = tfkl.Dense(tf.shape(E_shape)[-1], 'relu')
+            _shp = E_shape[-1]
+            self.f_E_new = tfkl.Dense(E_shape[-1], 'relu')
             self.V_dst_perm = tfkl.Lambda(
                 lambda x: tf.einsum('...dsv->...sdv', x))
 
