@@ -1,6 +1,7 @@
 import itertools
 
 import tensorflow as tf
+
 tf.config.set_visible_devices([], 'GPU')
 keras = tf.keras
 tfkl = keras.layers
@@ -80,38 +81,9 @@ def dense_to_dense_multigraph_net(d_in, d_out, B, N_v=64, d_v=16, d_e=8):
     return multigraph_net
 
 
-def recurrent_rollout_for_dense_to_dense_multigraph_net(multigraph_net, X):
-    y_pred = []
-    multigraph = multigraph_net.multigraph_template
-    for t in range(tf.shape(X)[1]):
-        output, multigraph = multigraph_net(X[:, t, :], multigraph)
-        y_pred.append(output)
-
-    Y_pred = tf.stack(y_pred, axis=1)
-    return Y_pred
-
-
-def make_dense_to_dense_multigraph_net_recurrent(multigraph_net, B, T, d_in):
-    """
-    cell_model: x, multigraph -> y, multigraph'
-    """
-
-    input_layer = tfkl.Input((T,d_in))
-    inputs = tfkl.Lambda(lambda x: tf.unstack(value=x, axis=1))(input_layer)
-    multigraph = multigraph_net.multigraph_template
-    outputs = []
-    for t in tf.range(T):
-        output, multigraph = multigraph_net(inputs[t], multigraph)
-        outputs.append(output)
-
-    output_layer = tfkl.concatenate(outputs, axis=1)
-    model = keras.Model(inputs=input_layer, outputs=output_layer)
-    return model
-
-
 def dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8):
     multigraph_net = dense_to_dense_multigraph_net(d_in, d_out, B, N_v, d_v, d_e)
-    recurrent_multigraph_net = make_dense_to_dense_multigraph_net_recurrent(multigraph_net, B, T, d_in)
+    recurrent_multigraph_net = tfkl.RNN(multigraph_net)
     return recurrent_multigraph_net
 
 
@@ -120,46 +92,18 @@ d_out = 32
 B = 4
 T0 = 20
 
-def get_data(B,T,d_in,d_out):
-    X = 1.4 + 2*tf.random.normal((B,T,d_in))
+
+def get_data(B, T, d_in, d_out):
+    X = 1.4 + 2 * tf.random.normal((B, T, d_in))
     Y_true = X @ tf.random.uniform((d_in, d_out))
     return X, Y_true
 
-"""rmgnet = dense_to_dense_recurrent_multigraph_net(d_in, d_out, B, T, N_v=64, d_v=16, d_e=8)
-Y_pred = rmgnet(X)
-print(Y_pred) """
 
-mgnet = dense_to_dense_multigraph_net(
-    d_in=d_in, d_out=d_out, B=B, N_v=8)
+dataset = [
+    get_data(B=B, T=round((batch_num ** 0.25 + 1) * T0), d_in=d_in, d_out=d_out)
+    for batch_num in range(20)]
 
-opt = keras.optimizers.Adam()
-def loss_fn(y_true, y_pred):
-    loss = keras.losses.mse(y_true, y_pred)
-    loss = keras.backend.sum(loss)
-    return loss
+rmgnet = dense_to_dense_recurrent_multigraph_net(
+    d_in, d_out, B, T, N_v=64, d_v=16, d_e=8)
 
-dataset = [get_data(B=B,T=round((batch_num**0.25 + 1)*T0),d_in=d_in,d_out=d_out) for batch_num in range(20)]
-
-
-trainable_vars = list(itertools.chain.from_iterable([
-    model.trainable_variables for model in list(mgnet.f_rel_update.values())
-]))
-
-# tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES)
-
-for epoch in range(3):
-    print(f"Starting epoch {epoch}:")
-    for step, (X, Y_true) in enumerate(dataset):
-        with tf.GradientTape() as tape:
-            Y_pred = recurrent_rollout_for_dense_to_dense_multigraph_net(mgnet, X)
-            loss = loss_fn(Y_true, Y_pred)
-
-        grads = tape.gradient(loss, trainable_vars)
-        opt.apply_gradients(zip(grads, trainable_vars))
-
-        # Log every 200 batches.
-        if step % 5 == 0:
-            print(
-                "Training loss (for one batch) at step %d: %.4f"
-                % (step, float(loss))
-            )
+y_pred = rmgnet(dataset[0])

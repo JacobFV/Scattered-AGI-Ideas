@@ -27,6 +27,22 @@ class Multigraph:
     def d_e(self, src, dst):
         return tf.shape(self.Es[(src, dst)])[-1]
 
+    def build_from_list(self, listed_data):
+        listed_data_iter = iter(listed_data)
+
+        for name, V in zip(list(self.Vs.keys()), listed_data_iter):
+            self.Vs[name] = V
+        for rel, E in zip(list(self.Es.keys()), listed_data_iter):
+            self.Es[rel] = E
+        for rel, A in zip(list(self.As.keys()), listed_data_iter):
+            self.As[rel] = A
+
+    def convert_to_list(self):
+        Vs = [V for g, V in self.Vs.items()]
+        Es = [V for rel, E in self.Es.items()]
+        As = [V for rel, A in self.As.items()]
+        return Vs + Es + As
+
     def connect_graphs(self, src, dst, e_emb=tf.ones((1,)), density=1.0):
         leading_dims = tf.shape(self.Vs[src])[:-2]
         N_src = tf.shape(self.Vs[src])[-2:-1]

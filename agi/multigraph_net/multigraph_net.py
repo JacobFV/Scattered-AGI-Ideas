@@ -7,7 +7,7 @@ keras = tf.keras
 tfkl = keras.layers
 
 
-class MultigraphNet:
+class MultigraphNet(tfkl.Layer):
     """This is a keras boilerplate class but not actually a keras model"""
 
     def __init__(self,
@@ -16,7 +16,6 @@ class MultigraphNet:
                  f_inp=(lambda inp, mg: mg),
                  f_update_seq=None,
                  f_ret=(lambda x: x),
-                 randomized_update_seq=False,
                  **kwargs):
         """
         multigraph_template (Multigraph): multigraph with same structure as the multigraph
@@ -31,6 +30,8 @@ class MultigraphNet:
         randomized_update_seq (bool): whether to randomize the order of (src,dst)
             relation updates.
         """
+        super(MultigraphNet, self).__init__(**kwargs)
+
         self.multigraph_template = multigraph_template # useful for priming RNN states
         self.f_rel_update = f_rel_update
         self.f_inp = f_inp
@@ -38,11 +39,32 @@ class MultigraphNet:
             f_update_seq = MultigraphNet.f_update_seq_egocentric
         self.f_update_seq = f_update_seq
         self.f_ret = f_ret
-        self.randomized_update_seq = randomized_update_seq
 
-    def __call__(self, input, multigraph, training=False):
+        self.state_size = [
+            tf.shape(tensor)
+            for tensor in
+            self.multigraph_template.convert_to_list()
+        ]
+        ret_template = self.f_ret(self.multigraph_template)
+        if isinstance(ret_template, list):
+            self.output_size = tf.shape([
+                tf.shape(tensor)
+                for tensor in
+                ret_template])
+        elif tf.is_tensor(ret_template):
+            self.output_size = tf.shape(ret_template)
+        else:
+            raise TypeError("f_ret should output a list or single tensor. "
+                            "Instead f_ret output a variable of type: %s"
+                            % type(ret_template))
 
-        multigraph = self.f_inp(input, multigraph)
+    #def get_initial_state(inputs=None, batch_size=None, dtype=None):
+    #   I may have to define this function
+
+    def __call__(self, input_at_t, states_at_t, training=False):
+
+        multigraph = self.multigraph_template.build_from_list(states_at_t)
+        multigraph = self.f_inp(input_at_t, multigraph)
         for rel in self.f_update_seq(multigraph):
             src, dst = rel
             multigraph.Vs[dst], multigraph.Es[rel], multigraph.As[rel] = \
@@ -51,7 +73,7 @@ class MultigraphNet:
                     multigraph.Es[rel], multigraph.As[rel]])
                     #training=training)
 
-        return self.f_ret(multigraph), multigraph
+        return self.f_ret(multigraph), multigraph.convert_to_list()
 
     @staticmethod
     class f_inp_update_root:
