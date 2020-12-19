@@ -7,7 +7,7 @@ keras = tf.keras
 tfkl = keras.layers
 
 
-class MultigraphNet(tfkl.Layer):
+class MultigraphLayer(tfkl.Layer):
     """This is a keras boilerplate class but not actually a keras model"""
 
     def __init__(self,
@@ -21,7 +21,7 @@ class MultigraphNet(tfkl.Layer):
         multigraph_template (Multigraph): multigraph with same structure as the multigraph
             used during inference. The batch dimension (0) of the tensors here should exactly
             match the batch size used for training or inference
-        f_rel_update (dict<(str,str): GraphNet>): update functions
+        f_rel_update (dict<(str,str): GraphLayer>): update functions
             for each source-destination graph pairs
         f_inp (input, multigraph -> multigraph): multigraph input modifications
         f_update_seq (multigraph -> list<(str, str)>): detirmines the order
@@ -30,13 +30,13 @@ class MultigraphNet(tfkl.Layer):
         randomized_update_seq (bool): whether to randomize the order of (src,dst)
             relation updates.
         """
-        super(MultigraphNet, self).__init__(**kwargs)
+        super(MultigraphLayer, self).__init__(**kwargs)
 
         self.multigraph_template = multigraph_template # useful for priming RNN states
         self.f_rel_update = f_rel_update
         self.f_inp = f_inp
         if f_update_seq is None:
-            f_update_seq = MultigraphNet.f_update_seq_egocentric
+            f_update_seq = MultigraphLayer.f_update_seq_egocentric
         self.f_update_seq = f_update_seq
         self.f_ret = f_ret
 

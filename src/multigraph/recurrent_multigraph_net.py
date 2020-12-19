@@ -6,9 +6,9 @@ tf.config.set_visible_devices([], 'GPU')
 keras = tf.keras
 tfkl = keras.layers
 
-from graph_net import GraphNet
+from graph_layer import GraphLayer
 from multigraph import Multigraph
-from multigraph_net import MultigraphNet
+from multigraph_layer import MultigraphLayer
 
 
 def dense_to_dense_multigraph_net(d_in, d_out, B, N_v=64, d_v=16, d_e=8):
@@ -39,44 +39,44 @@ def dense_to_dense_multigraph_net(d_in, d_out, B, N_v=64, d_v=16, d_e=8):
         d_v=d_out)
     multigraph.batch_size_multigraph(B)
     # multigraph.make_keras_compat()
-    multigraph_net = MultigraphNet(
+    multigraph_net = MultigraphLayer(
         multigraph_template=multigraph,
         f_rel_update={
             # the input layer
-            ("in", "cell"): GraphNet(
+            ("in", "cell"): GraphLayer(
                 name="in2cell",
-                f_inp=GraphNet.f_inp_concat(),
-                f_pool=GraphNet.f_pool_attn(
+                f_inp=GraphLayer.f_inp_concat(),
+                f_pool=GraphLayer.f_pool_attn(
                     d_key=8, d_val=16, N_heads=8),
-                f_v_up=GraphNet.f_v_up_beta(),
-                f_e_up=GraphNet.f_e_up_dense(),
-                f_adj_up=GraphNet._f_adj_up()),
+                f_v_up=GraphLayer.f_v_up_beta(),
+                f_e_up=GraphLayer.f_e_up_dense(),
+                f_adj_up=GraphLayer._f_adj_up()),
             # the working memory layer
-            ("cell", "cell"): GraphNet(
+            ("cell", "cell"): GraphLayer(
                 name="cell2cell",
-                f_inp=GraphNet.f_inp_concat(),
-                f_pool=GraphNet.f_pool_attn(
+                f_inp=GraphLayer.f_inp_concat(),
+                f_pool=GraphLayer.f_pool_attn(
                     d_key=16, d_val=64, N_heads=8),
-                f_v_up=GraphNet.f_v_up_beta(),
-                f_e_up=GraphNet.f_e_up_attn(
+                f_v_up=GraphLayer.f_v_up_beta(),
+                f_e_up=GraphLayer.f_e_up_attn(
                     d_key=8, d_val=16, N_heads=8),
-                f_adj_up=GraphNet._f_adj_up()),
+                f_adj_up=GraphLayer._f_adj_up()),
             # the output layer
-            ("cell", "out"): GraphNet(
+            ("cell", "out"): GraphLayer(
                 name="cell2out",
-                f_inp=GraphNet.f_inp_concat(),
-                f_pool=GraphNet.f_pool_attn(
+                f_inp=GraphLayer.f_inp_concat(),
+                f_pool=GraphLayer.f_pool_attn(
                     d_key=8, d_val=16, N_heads=8),
-                f_v_up=GraphNet.f_v_up_beta(),
-                f_e_up=GraphNet.f_e_up_attn(
+                f_v_up=GraphLayer.f_v_up_beta(),
+                f_e_up=GraphLayer.f_e_up_attn(
                     d_key=4, d_val=8, N_heads=8),
-                f_adj_up=GraphNet._f_adj_up())},
-        f_inp=MultigraphNet.f_inp_update_root("in"),
+                f_adj_up=GraphLayer._f_adj_up())},
+        f_inp=MultigraphLayer.f_inp_update_root("in"),
         f_update_seq=(lambda x: [
             ("in", "cell"),
             ("cell", "cell"),
             ("cell", "out")]),
-        f_ret=MultigraphNet.f_ret_just_root("out"))
+        f_ret=MultigraphLayer.f_ret_just_root("out"))
 
     return multigraph_net
 
