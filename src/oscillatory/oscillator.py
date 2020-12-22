@@ -34,7 +34,7 @@ class OscillatorCell(tfkl.AbstractRNNCell):
                                      initializer='glorot')
 
     def call(self, inputs, states):
-        new_states = states + keras.activations.relu(inputs) @ self.W_in + self.rate_bias
+        new_states = states + keras.activations.relu(inputs @ self.W_in) + self.rate_bias
         outputs = K.sin(states[...,None] * self.periods) @ self.W_out
 
 
