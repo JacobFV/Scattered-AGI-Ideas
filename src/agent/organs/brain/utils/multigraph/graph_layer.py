@@ -3,7 +3,7 @@ keras = tf.keras
 tfkl = keras.layers
 
 
-class GraphNet(keras.Model):
+class GraphLayer(keras.Model):
 
     def __init__(self,
                  f_inp,
@@ -15,7 +15,7 @@ class GraphNet(keras.Model):
         """
         """
 
-        super(GraphNet, self).__init__(**kwargs)
+        super(GraphLayer, self).__init__(**kwargs)
 
         self.f_inp = f_inp
         self.f_pool = f_pool
@@ -85,7 +85,7 @@ class GraphNet(keras.Model):
             """
             pre-LN (https://arxiv.org/abs/2004.08249)
             """
-            super(GraphNet.f_pool_attn, self).__init__(**kwargs)
+            super(GraphLayer.f_pool_attn, self).__init__(**kwargs)
 
             self.pre_layer_normalization = pre_layer_normalization
             self.d_key = d_key
@@ -168,7 +168,7 @@ class GraphNet(keras.Model):
 
     class f_v_up_beta(tfkl.Layer):
         def __init__(self, **kwargs):
-            super(GraphNet.f_v_up_beta, self).__init__(**kwargs)
+            super(GraphLayer.f_v_up_beta, self).__init__(**kwargs)
             self.f_beta = tfkl.Dense(1, 'softmax')
 
         def call(self, inputs, training=False):
@@ -178,7 +178,7 @@ class GraphNet(keras.Model):
 
     class f_v_up_alphabeta(tfkl.Layer):
         def __init__(self, **kwargs):
-            super(GraphNet.f_v_up_alphabeta, self).__init__(**kwargs)
+            super(GraphLayer.f_v_up_alphabeta, self).__init__(**kwargs)
             self.f_beta = tfkl.Dense(1, 'softmax')
             self.f_alpha = tfkl.Dense(1, 'softmax')
 
@@ -215,7 +215,7 @@ class GraphNet(keras.Model):
 
     class f_e_up_dense(tfkl.Layer):
         def __init__(self, **kwargs):
-            super(GraphNet.f_e_up_dense, self).__init__(**kwargs)
+            super(GraphLayer.f_e_up_dense, self).__init__(**kwargs)
 
         def build(self, input_shape):
             V_src_loc_shape, V_dst_loc_shape, E_shape = input_shape
@@ -232,7 +232,7 @@ class GraphNet(keras.Model):
 
     class f_e_up_dense_oneway(tfkl.Layer):
         def __init__(self, **kwargs):
-            super(GraphNet.f_e_up_dense_oneway, self).__init__(**kwargs)
+            super(GraphLayer.f_e_up_dense_oneway, self).__init__(**kwargs)
 
         def build(self, input_shape):
             V_src_loc_shape, V_dst_loc_shape, E_shape = input_shape
@@ -246,7 +246,7 @@ class GraphNet(keras.Model):
 
     class f_e_up_beta(tfkl.Layer):
         def __init__(self, **kwargs):
-            super(GraphNet.f_e_up_beta, self).__init__(**kwargs)
+            super(GraphLayer.f_e_up_beta, self).__init__(**kwargs)
 
         def build(self, input_shape):
             V_src_loc_shape, V_dst_loc_shape, E_shape = input_shape
@@ -269,7 +269,7 @@ class GraphNet(keras.Model):
             """
             pre-LN (https://arxiv.org/abs/2004.08249)
             """
-            super(GraphNet.f_e_up_attn, self).__init__(**kwargs)
+            super(GraphLayer.f_e_up_attn, self).__init__(**kwargs)
 
             self.pre_layer_normalization = pre_layer_normalization
             self.d_key = d_key

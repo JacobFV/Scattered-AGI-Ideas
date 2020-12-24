@@ -1,0 +1,1 @@
+"""measures contact for a particular class: eg: 'fine touch' or 'taste' """
