@@ -1,0 +1,29 @@
+start_request_compute_refit (name) -> string
+    First the agent must enter the testing arena while still running on its own server
+    There, the orchestrator measures its intelligence in a testing arena
+
+should_I_send_frozen_copy (name) -> bool
+    If it scores well, the response will indicate whether to send a frozen tarball (true)
+    or wait to be shutdown (false; maybe no response before shutdown)
+
+finish_request_compute_refit (name, frozen_agent:tar_file) -> void
+    This function takes in a frozen agent and place it on the optimal compute resource to
+    unfreeze and resume activity in the environment it was before sending a hibernating.
+
+    The agent is also given an appropriately determined boost of energy before unfreezing.
+
+    Agents carry the memory of their testing arena experience when they awaken from hibernation.
+    Embryo agents are born from this function
+
+env_energy_setpoint () -> float
+    how much net energy centrally orchestrated environments
+    should make available per second per agent
+
+    this covaries with available funding and the resources being spent on agents
+    if more funds are being spent on agents and environment compute resources
+    than expected to be available, the environments will experience energy shortages,
+    causing agents to decrease their compute requirements and possibly die
+
+
+get_gene_expression_fn_code (id:byte) -> string
+    returns url to .py file of gene expression function (if it exists)

@@ -1,0 +1,111 @@
+add_agent (name:str, morphology:morphology_graph) -> void
+    adds agent to env. (To update, remove first, then re-add)
+
+    params:
+        name:str - name of agent to add/update. This name is prepended before its organ's name
+        morphology:morphology_graph - Unity3D structure of agent. Comped of nested dictionaries:
+            morphology_graph: dict<str, any>
+              - name: str
+              - nodes: dict<str, list<node_game_obj>>
+                    node_game_obj: dict<str, any>
+                      - name: str
+                      - type: str
+                      - params: dict<str, str>
+              - edges: dict<str, list<edge_game_obj>>
+                    edge_game_obj: dict<str, any>
+                      - name: str
+                      - type: str
+                      - params: dict<str, str>
+
+            The possible node and edge types are:
+                node_game_obj types:
+                    "geometry": {
+                        type: "cube"|"ovaloid"
+                        size: [ float, float, float ]
+                        rigid: bool
+                        collision_layers: int
+                        contact_type: str
+                        rgba_color: [ float, float, float, float ]
+                    },
+                    "hinge_joint": {
+                        axis: int
+                        limits: { min: float, max: float }
+                        break_force: float
+                    },
+                    "ball_joint": { # actually uses configurable joint
+                        xlimits: { min: float, max: float }
+                        ylimits: { min: float, max: float }
+                        zlimits: { min: float, max: float }
+                        break_force: float
+                    },
+                    "rigid_joint": {
+                        break_force: float
+                    },
+                    "camera": {
+                        fov: float
+                        dof: float
+                    },
+                    "microphone": {
+                        sensitivity: float
+                    },
+                    "speaker" {
+                        distance: float
+                    },
+                    "light": {
+                        brightness: float
+                        rgb_color: [ float, float, float ]
+                    }
+
+                edge_game_obj types:
+                    "beam": {
+                        profile_dims: [float, float]
+                        rigid: bool
+                        tension: float
+                        collision_layers: int
+                        contact_type: str
+                        rgba_color: [ float, float, float, float ]
+                    }
+
+
+set_property (name:str, organ:str, prop:str, val:any) -> void
+    modality-specific custom logic. eg:
+        - set_property(*,"L_quadrucept","tension",0.5)
+        - set_property(*,"R_eye","fov",23)
+
+
+remove_from_env (name:str) -> void
+    removes all unity3d objects under agent name from env (transitioning rooms, dying)
+
+    params:
+        name:str - name of agent to remove
+
+
+get_joint_state (name:str) -> broken:bool, friction:float
+
+
+get_bone_force (name:str) -> float
+    get highest normal contact force since last checked
+
+
+get_contacts (name:str) -> list<str>
+    get string tags of all objects with matching contact_tag data
+    that touched this rigid body since last checked
+
+
+##########################################################
+###### TODO: I may need continuous pipes for this ########
+##########################################################
+get_camera_image (name:str) -> Image
+
+    params:
+    name:str - "agentname_cameraname"
+
+get_microphone_sound (name:str, start:float, end:float) -> Sound
+
+    params:
+    name:str - "agentname_microphonename"
+    start:float - seconds to start getting audio for
+    end:float - second to end getting audio for
+
+
+set_speaker (name:str, sound:Sound) -> void
