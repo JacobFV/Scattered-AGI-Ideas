@@ -1,35 +1,47 @@
 class Body:
 
-    def __init__(self):
-        self.nodes = dict()
-        self.edges = dict()
+    class Node:
+        def __init__(self, name):
+            self.name = name
+            self.organs = []
+            self.incoming_edges = []
+            self.outgoing_edges = []
 
-    def add_node(self, name): pass
+    class Edge:
+        def __init__(self, src, dst):
+            """
+            params:
+                src (Body.Node)
+                dst (Body.Node)
+            """
+            self.src = src
+            self.dst = dst
+            self.organs = []
 
-    def add_edge(self, src_node, dst_node): pass
+    def __init__(self, nodes, edges):
+        """
+        nodes (list<str>): nodes to init
+        edges (list<tuple<str,str>>): edges to init
+        """
+        self.nodes = {name: Body.Node(name) for name in nodes}
+        self.edges = {
+            (src_name,dst_name):
+                Body.Edge(src=self.nodes[src_name], dst=self.nodes[dst_name])
+            for src_name, dst_name in edges}
+        for edge in self.edges:
+            edge.src.outgoing.append(edge)
+            edge.dst.incoming.append(edge)
 
-    def add_organ_to_node(self, name): pass
+    @property
+    def get_all_organs(self):
+        all_organs = []
+        for node in list(self.nodes.values()):
+            all_organs.extend(node.organs)
+        for edge in list(self.edges.values()):
+            all_organs.extend(edge.organs)
+        return all_organs
 
-    def add_organ_to_edge(self, src_node, dst_node): pass
-
-    def remove_node(self, name): pass
-
-    def remove_edge(self, src_node, dst_node): pass
-
-    def remove_organ_from_node(self, name): pass
-
-    def remove_organ_from_edge(self, src_node, dst_node): pass
-
-    def get_incoming_edges(self, node): pass
-
-    def get_outgoing_edges(self, node): pass
-
-    def get_organs_at_node(self, node): pass
-
-    def get_organs_at_edge(self, src_node, dst_node): pass
-
-    def get_node_for_organ(self, organ): pass
-
-    def get_edge_for_organ(self, organ): pass  # returns tuple<str,str>
-
-    def get_all_organs(self): pass
+    @staticmethod
+    def init_from_rna(agent):
+        """gene expression function for body"""
+        raise NotImplementedError() # TODO
