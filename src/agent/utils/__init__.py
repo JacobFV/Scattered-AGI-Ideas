@@ -1,30 +1,52 @@
-class CallTree:
-
-    def __init__(self, T_objs, T, *fn_names):
-        self.T_objs = T_objs
-        for fn_name in fn_names:
-            def func(self, *args, **kwargs):
-                for T_obj in self.T_objs:
-                    T_obj.fn_name(*args, **kwargs)
-            self.__setattr__(fn_name, func)
-
-
-class Freezable(CallTree):
+class Freezable:
+    """
+    Freezables must first be initialized before unfreezing
+    """
 
     def __init__(self, freezables=[]):
-        super(Freezable, self).__init__(freezables, Freezable, "freeze", "unfreeze")
+        self.freezables = freezables
+
+    def freeze(self, dir):
+        for freezable in self.freezables:
+            freezable.freeze(dir)
+
+    def unfreeze(self, dir):
+        for freezable in self.freezables:
+            freezable.unfreeze(dir)
 
 
-class Stepable(CallTree):
+class Stepable:
 
     def __init__(self, stepables=[]):
-        super(Stepable, self).__init__(stepables, Stepable, "step")
+        self.stepables = stepables
+
+    def step(self):
+        for stepable in self.stepables:
+            stepable.step()
 
 
-class Trainable(CallTree):
+class Trainable:
 
     def __init__(self, trainables=[]):
-        super(Trainable, self).__init__(trainables, Trainable, "train")
+        self.trainables = trainables
+
+    def train(self):
+        for trainable in self.trainables:
+            trainable.train()
+
+
+class SimulationEnvCommunicator:
+
+    def __init__(self, simulation_env_communicators=[]):
+        self.simulation_env_communicators = simulation_env_communicators
+
+    def add_to_env_simulation(self):
+        for simulation_env_communicator in self.simulation_env_communicators:
+            simulation_env_communicator.add_to_env_simulation()
+
+    def remove_from_env_simulation(self):
+        for simulation_env_communicator in self.simulation_env_communicators:
+            simulation_env_communicator.remove_from_env_simulation()
 
 
 class PermanentName:

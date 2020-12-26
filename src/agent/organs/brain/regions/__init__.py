@@ -17,3 +17,13 @@ class BrainRegion(utils.Freezable,
 
     def unfreeze(self, dir):
         raise NotImplementedError()
+
+
+class PeripheralBrainRegion(BrainRegion): pass
+
+
+class GlobalWorkspaceRegion(BrainRegion):
+
+    @property
+    def get_latent(self):
+        raise NotImplementedError("this method should be overriden in subclasses")
