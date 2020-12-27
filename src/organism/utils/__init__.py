@@ -6,13 +6,13 @@ class Freezable:
     def __init__(self, freezables=[]):
         self.freezables = freezables
 
-    def freeze(self, dir):
+    def freeze(self, freeze_to_path):
         for freezable in self.freezables:
-            freezable.freeze(dir)
+            freezable.freeze(freeze_to_path)
 
-    def unfreeze(self, dir):
+    def unfreeze(self, unfreeze_from_path):
         for freezable in self.freezables:
-            freezable.unfreeze(dir)
+            freezable.unfreeze(unfreeze_from_path)
 
 
 class Stepable:

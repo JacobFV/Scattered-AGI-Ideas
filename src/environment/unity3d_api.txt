@@ -24,7 +24,7 @@ add_agent (name:str, morphology:morphology_graph) -> void
                         size: [ float, float, float ]
                         rigid: bool
                         collision_layers: int
-                        contact_type: str
+                        contact_type: str // geometry objects are detectors for specific `types` of stimulii: eg: "taste", "texture"
                         rgba_color: [ float, float, float, float ]
                     },
                     "hinge_joint": {
@@ -57,14 +57,14 @@ add_agent (name:str, morphology:morphology_graph) -> void
                     }
 
                 edge_game_obj types:
-                    "beam": {
-                        profile_dims: [float, float]
-                        rigid: bool
-                        tension: float
-                        collision_layers: int
-                        contact_type: str
+                    "bone": {
+                        profile_dims: [float, float] // used for drag and lift calculations
                         rgba_color: [ float, float, float, float ]
-                    }
+                    },
+                    "muscle": {
+                        tension: float
+                        rgba_color: [ float, float, float, float ]
+                    },
 
 
 set_property (name:str, organ:str, prop:str, val:any) -> void

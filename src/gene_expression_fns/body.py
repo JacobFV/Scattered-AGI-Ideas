@@ -1,1 +1,0 @@
-gene_expression_fn = Body.init_from_rna # `Body` will already be imported into the runtime by now

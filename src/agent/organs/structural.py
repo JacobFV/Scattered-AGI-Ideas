@@ -1,3 +1,0 @@
-muscle
-joint
-bone

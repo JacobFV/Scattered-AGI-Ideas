@@ -8,22 +8,23 @@ class Brain(NodeOrgan):
         """
         params:
         name
-        agent
+        organism
         """
 
         kwargs['freezables'] = self.get_regions
         kwargs['trainables'] = self.get_regions
         kwargs['stepables'] = self.get_regions
-        kwargs['name'] = f"{kwargs['agent']}_brain"
+        kwargs['name'] = f"{kwargs['organism']}_brain"
 
         super(Brain, self).__init__(**kwargs)
 
         # PERIPHERAL REGIONS
         # TODO all code in this block
+        # all of these regions should be able to take in dynamic body parts
+        # whether predominately input or output, all regions have some kind of diversity optimizing latent code
         self.auditory_perception = None # spectrograph processing
         self.auditory_generation = None # spectrograph generation
-        self.monocular_visual_perception = None # single image
-        self.joint_visual_perception = None # set of input images
+        self.visual_perception = None # set of input images
         self.energovascular_cortex = None # top-down biasing for graph of all energy-aware information
         # energy converting, energy storing, energy transfer, lights, energy vessel, energy pump, and
         # energy availability at energy nodes along the graph
@@ -35,8 +36,7 @@ class Brain(NodeOrgan):
         self.peripheral_regions = [
             self.auditory_perception,
             self.auditory_generation,
-            self.monocular_visual_perception,
-            self.joint_visual_perception,
+            self.visual_perception,
             self.energovascular_cortex,
             self.gustatory_cortex,
             self.somatosensory_cortex,
@@ -46,19 +46,16 @@ class Brain(NodeOrgan):
 
         # HIGHER REGIONS
         # TODO all code in this block
-        self.language_understanding_cortex = None # language integrator
-        self.language_generation_cortex = None # language differentiator
-        self.neocortex = None # graph of cortical columns
+        self.memory_center = None # store and recall global workspace trajectories
+        self.abstract_reasoning_cortex = None # graph of cortical columns
         # with overall gradient of peripheral_region connection across the neocortex
-        self.allostatic_regulator = None # detirmine if nocioceptive, free-energy related stimulii are present
-        self.reward_system = None # bias consciousness global workspace temperature
+        self.affective_center = None # outputs arousal, motivational intensity, and valency
 
+        # TODO make new class GWT_Region which all brain regions subclass
         self.global_workspace_regions = [
-            self.language_understanding_cortex,
-            self.language_generation_cortex,
-            self.neocortex,
-            self.allostatic_regulator,
-            self.reward_system
+            self.memory_center,
+            self.abstract_reasoning_cortex,
+            self.affective_center
         ] + self.peripheral_regions
         self.multimodal_translator = dict() # TODO
 

@@ -101,7 +101,7 @@ learning from policy learning.
   - metalearning should be utilized to provide information to many related tasks-not just one
   - learn an exploration policy to recover the information from demonstrations and learn an execution policy (and take note of what information was necesary for that policy)
 
-- [The Emergence of Adversarial Communication in Multi-Agent Reinforcement Learning](https://arxiv.org/abs/2008.02616)
+- [The Emergence of Adversarial Communication in Multi-Organism Reinforcement Learning](https://arxiv.org/abs/2008.02616)
   - use differentiable communication channels to accelerate learning and convergence
   - cooperative teams recover from selfish (but not malicious) influence with learnable *filter taps*
   - dynamicly constructed agregation graph neural network defines communication channels according to spatial inter-agent metrics

@@ -4,7 +4,7 @@ class Sensor:
         raise NotImplementedError()
 
     def get_observation(self):
-        raise NotImplementedError()
+        return self.observation
 
 
 class Actuator:
@@ -12,5 +12,5 @@ class Actuator:
     def get_action_space(self):
         raise NotImplementedError()
 
-    def do_action(self):
-        raise NotImplementedError()
+    def set_action(self, action):
+        self.action = action
