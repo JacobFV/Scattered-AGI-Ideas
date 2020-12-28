@@ -2,7 +2,7 @@ from .organs import Organ, NodeOrgan, EdgeOrgan
 import utils
 
 import time
-
+import tensorflow as tf
 
 class Organism(utils.Freezable,
                utils.Stepable,
@@ -36,22 +36,25 @@ class Organism(utils.Freezable,
         super(Organism, self).remove_from_env_simulation() # close modality-specific io streams
 
     def freeze(self, freeze_to_path):
-        # no custom logic here. Let the individual organs freeze themselves
+        # TODO save energy values of self.coordinating_nodes
+        # Let the individual organs freeze themselves
         super(Organism, self).freeze(freeze_to_path)
 
     def unfreeze(self, unfreeze_from_path):
-        # no custom logic here. Let the individual organs unfreeze themselves
+        # TODO restore energy values of self.coordinating_nodes
+        # Let the individual organs unfreeze themselves
         super(Organism, self).unfreeze(unfreeze_from_path)
 
     def __init__(self,
                  name,
                  organs,
-                 env_comm):
+                 env_comm,
+                 d_energy=8):
         """
         name
         organs: dict of str:NodeOrgan or (str,str):EdgeOrgan
-        env_simulator_ip
-        env_simulator_port
+        ip
+        port
         """
 
         self.all_organs_list = []
@@ -65,6 +68,7 @@ class Organism(utils.Freezable,
 
         self.organs = organs
         self.env_comm = env_comm
+        self.d_energy = d_energy
         self.coordinating_nodes = dict()
         for name, organ_sublist in organs.items():
             self.all_organs_list.extend(organ_sublist)
@@ -96,9 +100,12 @@ class Organism(utils.Freezable,
                     raise TypeError("keys in the organ graph should be str or str tuples")
 
 
-class CoordinatingNode(utils.PermanentName):
-    def __init__(self, **kwargs):
+class CoordinatingNode(Organ, utils.PermanentName):
+    def __init__(self, d_energy, **kwargs):
         super(CoordinatingNode, self).__init__(**kwargs)
         self.node_organs = []
         self.incoming_edge_organs = []
         self.outgoing_edge_organs = []
+        self.energy = tf.zeros((d_energy,))
+
+    # TODO add get_observation for energ levels here

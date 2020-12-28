@@ -87,9 +87,13 @@ get_bone_force (name:str) -> float
     get highest normal contact force since last checked
 
 
-get_contacts (name:str) -> list<str>
-    get string tags of all objects with matching contact_tag data
+get_objs_in_contact (name:str, consumable_type:str) -> tuple<list<str>,list<str>>
+    get string names and tags of all objects with matching contact_tag data
     that touched this rigid body since last checked
+
+
+remove_objs (names: list<str) -> void
+    remove objects (probably obtained from tasting)
 
 
 ##########################################################

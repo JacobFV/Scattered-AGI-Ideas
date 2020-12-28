@@ -1,5 +1,5 @@
 from ..organism import Organism
-from ..organs import circulatory, contact, digestive, ear, energetics, eye, kinesthetic, light, speaker
+from ..organs import circulatory, contact, io, ear, energetics, eye, kinesthetic, light, speaker
 
 class Humanoid(Organism):
     """just custom initializer. nothing else different"""

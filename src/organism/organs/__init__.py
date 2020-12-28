@@ -10,13 +10,16 @@ class Organ(utils.Freezable,
             Sensor,
             Actuator):
 
-    def _set_agent(self, agent):
-        self.agent = agent
+    def _set_agent(self, organism):
+        self.organism = organism
 
     @property
     def unity3d_primitive(self):
         raise NotImplementedError()
 
+    @property
+    def get_name(self):
+        return f'{self.organism.get_name}_{self._name}'
 
 class NodeOrgan(Organ):
 

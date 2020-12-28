@@ -22,8 +22,8 @@ class UnityEnvComm(EnvComm):
     def __init__(self, env_simulator_ip, env_simulator_port, **kwargs):
         super(UnityEnvComm, self).__init__(**kwargs)
 
-        self.env_simulator_ip = env_simulator_ip
-        self.env_simulator_port = env_simulator_port
+        self.ip = env_simulator_ip
+        self.port = env_simulator_port
 
     def open_connection(self):
         # TODO maybe unnecesary if data is transmitted by GETs and POSTs

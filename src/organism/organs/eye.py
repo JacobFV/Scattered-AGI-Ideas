@@ -42,11 +42,11 @@ class UnityEye(Eye):
         # by now, the unity engine has already made a camera object
         # we just need to query for and connect to it
 
-        unity_camera_name = f'{self.agent.get_name}_{self.get_name}'
+        unity_camera_name = self.get_name
 
-        ip = self.agent.env_comm.env_simulator_ip
+        ip = self.organism.env_comm.ip
 
-        # TODO query ip : self.agent.env_comm.env_simulator_port for
+        # TODO query ip : self.organism.env_comm.port for
         # the port that unity_camera_name belongs to
         port = None
 
@@ -58,5 +58,5 @@ class UnityEye(Eye):
             logging.log(f"eye {self.get_name} could not connect to {ip}:{port} {addr}")
 
     def remove_from_env_simulation(self):
-        # TODO close communication channel with self.env_simulator_ip/port
+        # TODO close communication channel with self.ip/port
         raise NotImplementedError()

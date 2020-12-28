@@ -24,7 +24,7 @@ if __name__ == '__main__':
     logging.log('adding organism to environment')
     humanoid.add_to_env_simulation()
 
-    logging.log('starting to run agent')
+    logging.log('starting to run organism')
     humanoid.run()
 
     logging.log('removing from simulation')
