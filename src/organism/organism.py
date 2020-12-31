@@ -1,111 +1,101 @@
 from .organs import Organ, NodeOrgan, EdgeOrgan
+from .organs.energetics import EnergyNode
 import utils
 
 import time
+import logging
 import tensorflow as tf
 
-class Organism(utils.Freezable,
-               utils.Stepable,
-               utils.Trainable,
-               utils.SimulationEnvCommunicator,
-               utils.PermanentName):
+
+class Organism(utils.PermanentName):
 
     def run(self):
         """clocked simulation loop"""
+        train_step = 1
+
         freq = 10
-        self.step_num = 0
+        self.step_num = 1
         self.t_start = time.time()
+        self.train_freq = 150 # individual organs can alter the training frequency (eg: brain during sleep)
         while True:
             self.step()
             # wait only if behind schedule
+            if self.step_num % self.train_freq == 0:
+                train_step += 1
+                logging.log(f'train step {train_step}')
+                self.train(tf.math.log(train_step / 1000))
+                # this may take some time so reset the clocking data afterward
+                self.step_num = 0
+                self.t_start = time.time()
             t_end = self.t_start + (self.step_num/freq)
             time.sleep(max(0., t_end - time.time()))
 
-    def train(self):
-        super(Organism, self).train()
-        # this may take some time so reset the clocking data afterward
-        self.step_num = 0
-        self.t_start = time.time()
+    def step(self):
+        for organ in self.organ_list:
+            organ.step()
+        self.step_num += 1
 
     def add_to_env_simulation(self):
         self.env_comm.add_organism_to_env(self)
-        super(Organism, self).add_to_env_simulation() # open modality-specific io streams
+        # open modality-specific io streams
+        for organ in self.organ_list:
+            organ.add_to_env_simulation()
 
     def remove_from_env_simulation(self):
         self.env_comm.remove_organism_from_env(self)
-        super(Organism, self).remove_from_env_simulation() # close modality-specific io streams
+        # close modality-specific io streams
+        for organ in self.organ_list:
+            organ.remove_from_env_simulation()
 
     def freeze(self, freeze_to_path):
-        # TODO save energy values of self.coordinating_nodes
-        # Let the individual organs freeze themselves
-        super(Organism, self).freeze(freeze_to_path)
+        # TODO save energy values of self.nodes. No - they are actually organ_graph too
+        # Let the individual organ_graph freeze themselves
+        for organ in self.organ_list:
+            organ.freeze(freeze_to_path)
 
     def unfreeze(self, unfreeze_from_path):
-        # TODO restore energy values of self.coordinating_nodes
-        # Let the individual organs unfreeze themselves
-        super(Organism, self).unfreeze(unfreeze_from_path)
+        # TODO restore energy values of self.nodes. No - they are actually organ_graph too
+        # Let the individual organ_graph unfreeze themselves
+        for organ in self.organ_list:
+            organ.unfreeze(unfreeze_from_path)
 
     def __init__(self,
                  name,
-                 organs,
+                 freq,
                  env_comm,
-                 d_energy=8):
+                 organ_graph,
+                 d_energy):
         """
-        name
-        organs: dict of str:NodeOrgan or (str,str):EdgeOrgan
-        ip
-        port
         """
 
-        self.all_organs_list = []
 
-        super(Organism, self).__init__(
-            name=name,
-            freezables=self.all_organs_list,
-            stepables=self.all_organs_list,
-            simulation_env_communicators=self.all_organs_list,
-            trainables=self.all_organs_list)
+        super(Organism, self).__init__(name=name)
 
-        self.organs = organs
+        self.freq = freq
         self.env_comm = env_comm
+        self.organ_graph = organ_graph
         self.d_energy = d_energy
-        self.coordinating_nodes = dict()
-        for name, organ_sublist in organs.items():
-            self.all_organs_list.extend(organ_sublist)
-            if isinstance(name, str): # only nodes
-                self.coordinating_nodes[name]=CoordinatingNode(name=name)
-        for node_name, node in self.coordinating_nodes:
-            for name, organ_sublist in organs.items():
-                if isinstance(name, str):
-                    if node_name == name:
-                        node.node_organs = organ_sublist
-                        for organ in organ_sublist:
-                            organ._set_node(node)
-                elif isinstance(name, tuple):
-                    src, dst = name
-                    if node_name == src:
-                        src_node = node
-                        dst_node = self.coordinating_nodes[dst]
-                        src_node.outgoing_edge_organs = organ_sublist
-                        for organ in organ_sublist:
-                            organ._set_nodes(src, dst)
-                    elif node_name == dst:
-                        src_node = self.coordinating_nodes[src]
-                        dst_node = node
-                        src_node.incoming_edge_organs = organ_sublist
-                        for organ in organ_sublist:
-                            organ._set_nodes(src, dst)
-                    else: pass
-                else:
-                    raise TypeError("keys in the organ graph should be str or str tuples")
 
+        self.organ_list = []
+        for key, organ_sublist in self.organ_graph.items():
+            self.organ_list.extend(organ_sublist)
+            if isinstance(key, EnergyNode): # not edges (tuples)
+                node = key
+                organ_sublist.append(node) # this allows the EnergyNode to also connect to its neighbors
+                self.organ_list.append(node)
+                for node_organ in organ_sublist:
+                    node_organ.set_node(node)
+                    node_organ.parallel_node_organs = organ_sublist
+            elif isinstance(key, tuple) and len(key) == 2:
+                src, dst = key
+                antiparallel_edge_organs_sublist = self.organ_graph[dst, src] \
+                    if (dst, src) in organ_graph.keys() else []
+                for edge_organ in organ_sublist:
+                    edge_organ.set_nodes(src, dst)
+                    edge_organ.parallel_edge_organs = organ_sublist
+                    edge_organ.antiparallel_edge_organs = antiparallel_edge_organs_sublist
+            else:
+                raise TypeError("keys in the organ graph should be NodeOrgan or NodeOrgan 2-tuples")
 
-class CoordinatingNode(Organ, utils.PermanentName):
-    def __init__(self, d_energy, **kwargs):
-        super(CoordinatingNode, self).__init__(**kwargs)
-        self.node_organs = []
-        self.incoming_edge_organs = []
-        self.outgoing_edge_organs = []
-        self.energy = tf.zeros((d_energy,))
-
-    # TODO add get_observation for energ levels here
+        for organ in self.organ_list:
+            organ.set_organism(self)

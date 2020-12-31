@@ -34,7 +34,7 @@ class UnityEye(Eye):
         # update self.image
         raw = self.conn.recv()
 
-        # perform action
+        # perform _action
         # rotate eye
         # adjust pitch and yaw
 

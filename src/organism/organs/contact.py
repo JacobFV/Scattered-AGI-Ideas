@@ -11,3 +11,5 @@ class NodeContact(NodeOrgan):
         self.geometry = geometry
         self.d_emb = d_emb
 
+    def set_action(self, action):
+        if self.en
