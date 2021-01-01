@@ -31,6 +31,8 @@ class Organism(utils.PermanentName):
             time.sleep(max(0., t_end - time.time()))
 
     def step(self):
+        # TODO make sure energy nodes perform top_down last
+        #  so their _fe accurately reflects leftovers
         for organ in self.organ_list:
             organ.step()
         self.step_num += 1
@@ -81,7 +83,7 @@ class Organism(utils.PermanentName):
             self.organ_list.extend(organ_sublist)
             if isinstance(key, EnergyNode): # not edges (tuples)
                 node = key
-                organ_sublist.append(node) # this allows the EnergyNode to also connect to its neighbors
+                organ_sublist.append(node) # this allows the Node to also connect to its neighbors
                 self.organ_list.append(node)
                 for node_organ in organ_sublist:
                     node_organ.set_node(node)

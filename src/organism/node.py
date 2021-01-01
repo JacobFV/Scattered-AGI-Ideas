@@ -1,32 +1,43 @@
 from . import utils
 
-class EnergyNode(utils.Freezable, utils.PermanentName):
+import tensorflow as tf
+keras = tf.keras
+tfkl = keras.layers
+K = keras.backend
+
+
+class Node(utils.Freezable, utils.PermanentName):
 
     def __init__(self,
                  name,
                  adaptive_potential,
                  adaptation_beta=0.99,
                  adaptation_threshold=10):
-        super(EnergyNode, self).__init__(name=name)
 
-        self.children = list()
-        self._parents = dict()
-        self._target_states = dict()
-        self._state = None
+        super(Node, self).__init__(name=name)
 
         self._adaptive_potential = adaptive_potential
         self._adaptive_beta = adaptation_beta
         self._adaptation_threshold = adaptation_threshold
+
         self._fe = 0
         self._rolling_fe = 0
 
+        self.children = list()
+        self._parents = dict()
+        self._target_states = dict()
+        self._state = {
+            'controllable': { },
+            'uncontrollable': {
+                'fe': self._get_fe
+            }
+        }
+
     @property
     def get_state(self):
-        """should return a dict like:
-        {
-            'controllable': dict<str, any>,
-            'uncontrollable': dict<str, any>
-        }
+        """returns a dict like:
+        { 'controllable': dict<str, any>,
+          'uncontrollable': dict<str, any> }
         """
         return self._state
 
@@ -44,18 +55,14 @@ class EnergyNode(utils.Freezable, utils.PermanentName):
         """action. act according to self_target_states"""
         self._target_states = dict()
 
-        self._check_for_new_adaptations()
         if self._rolling_fe > self._adaptation_threshold and self._rolling_fe > 0:
-            self._adapt()
+            self._maybe_apply_adaptation()
+            self._start_adaptation()
             self._adaptive_potential -= self._rolling_fe
 
-    def _check_for_new_adaptations(self):
+    def _start_adaptation(self):
         """simple models may adapt in realtime instead of using this dedicated fn"""
-        raise NotImplementedError()
-
-    def _adapt(self):
-        """simple models may adapt in realtime instead of using this dedicated fn"""
-        raise NotImplementedError()
+        pass
 
     def _set_fe(self, fe):
         self._fe = fe
@@ -86,8 +93,17 @@ class EnergyNode(utils.Freezable, utils.PermanentName):
             'controllable': dict<str, any>,
                 ...
             'uncontrollable': dict<str, any>
-                'fe': scalar,
+                'fe': (1,),
                 ...
         }
         """
-        raise NotImplementedError()
+        def parse_dict(d):
+            d_ret = dict()
+            for k,v in d.items():
+                if isinstance(v, dict):
+                    d_ret[k] = parse_dict(v)
+                else:
+                    d_ret[k] = K.int_shape(v)
+            return d_ret
+
+        return parse_dict(self._state)
