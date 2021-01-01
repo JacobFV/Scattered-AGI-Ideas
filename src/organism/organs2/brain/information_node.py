@@ -36,13 +36,12 @@ class InformationNode(NodeOrgan):
         # are more responsive to low entropy stimuli
         # self._latent: 1-Tensor, 2-Tensor, any...
 
-        self._fe = sum([
+        self._set_fe(sum([
             KL( latent_component, prediction_component ) # TODO
             for latent_component, prediction_component
             in zip(list(self._latent.values()),
                    list(self._pred_latent.values()))
-        ])
-        # self._fe: 1-Tensor: (1,)
+        ]))
 
         self.pred_latent = self.f_pred(latent=self._latent)
         # self._pred_latent: `self._latent`-like
@@ -86,11 +85,9 @@ class InformationNode(NodeOrgan):
             current_parents=self._get_parent_states)
 
         for parent, target_state in target_parent_states:
-            parent.set_target_state(target_state=target_state, callee=self
+            parent.set_target_state(target_state=target_state, callee=self)
 
         super(InformationNode, self).top_down()\
-
-
 
     @property
     def _get_parent_states(self):
@@ -110,7 +107,7 @@ class InformationNode(NodeOrgan):
                 'latent': self._latent,
             },
             'uncontrollable': {
-                'fe': self._fe,
+                'fe': self._get_fe,
             }
         }
 

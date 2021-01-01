@@ -2,7 +2,11 @@ from . import utils
 
 class EnergyNode(utils.Freezable, utils.PermanentName):
 
-    def __init__(self, name, adaptive_potential, adaptation_threshold=10):
+    def __init__(self,
+                 name,
+                 adaptive_potential,
+                 adaptation_beta=0.99,
+                 adaptation_threshold=10):
         super(EnergyNode, self).__init__(name=name)
 
         self.children = list()
@@ -10,10 +14,11 @@ class EnergyNode(utils.Freezable, utils.PermanentName):
         self._target_states = dict()
         self._state = None
 
-        self.adaptive_potential = adaptive_potential
+        self._adaptive_potential = adaptive_potential
+        self._adaptive_beta = adaptation_beta
+        self._adaptation_threshold = adaptation_threshold
         self._fe = 0
         self._rolling_fe = 0
-        self._adaptation_threshold = adaptation_threshold
 
     @property
     def get_state(self):
@@ -40,8 +45,9 @@ class EnergyNode(utils.Freezable, utils.PermanentName):
         self._target_states = dict()
 
         self._check_for_new_adaptations()
-        if self._rolling_fe > self._adaptation_threshold:
+        if self._rolling_fe > self._adaptation_threshold and self._rolling_fe > 0:
             self._adapt()
+            self._adaptive_potential -= self._rolling_fe
 
     def _check_for_new_adaptations(self):
         """simple models may adapt in realtime instead of using this dedicated fn"""
@@ -53,14 +59,12 @@ class EnergyNode(utils.Freezable, utils.PermanentName):
 
     def _set_fe(self, fe):
         self._fe = fe
-        self._rolling_fe = # TODO
+        self._rolling_fe = self._adaptive_beta * self._rolling_fe + \
+                           (1-self._adaptive_beta) * self._fe
 
-    # TODO erase _fe from InformationNode and use these get and setrs instead
-
+    @property
     def _get_fe(self):
         return self._fe
-
-    def
 
     @property
     def get_state_space(self):
