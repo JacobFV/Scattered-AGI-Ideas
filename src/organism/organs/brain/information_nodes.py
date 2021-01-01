@@ -108,23 +108,18 @@ class PredictiveNode(InformationNode):
             children_target_latent_weights.append(child._fe - entropy(target_latent)) # TODO
             children_latents.append(target_latent)
 
-        combined_latent_weights = neighbors_pred_latent_weights + children_target_latent_weights + [- self._fe - entropy(self._pred_latent)]
+        combined_latent_weights = neighbors_pred_latent_weights + \
+                                  children_target_latent_weights + \
+                                  [self._fe - entropy(self._pred_latent)]
         combined_latents = translated_neighbor_latent + children_latents + [self._pred_latent]
 
 
-
     def _get_observation(self):
-        """
-        This function assumes the uncontrollable state space of all children are 1d tensors
-        It must be modified for graph, lattice, or irregularly structured data
-
-        returns dict<InformationNode, tuple<xc, xu>>
-        """
         parents = dict()
-        for node, rel in self.parents.items():
-            xc, xu = node.get_state()
-            xu['rel'] = rel
-            parents[node] = (xc, xu)
+        for parent, rel in self.parents.items():
+            state = parent.get_state()
+            state['uncontrollable']['rel'] = rel
+            parents[parent] = state
         return parents
 
     def _set_controllable_observation(self, target_xc_dict):

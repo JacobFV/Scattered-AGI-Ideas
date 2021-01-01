@@ -10,12 +10,6 @@ class Freezable:
         raise NotImplementedError()
 
 
-class Stepable:
-
-    def step(self):
-        raise NotImplementedError()
-
-
 class SimulationEnvCommunicator:
 
     def add_to_env_simulation(self):
