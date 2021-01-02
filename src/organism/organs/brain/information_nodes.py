@@ -90,7 +90,7 @@ class PredictiveNode(InformationNode):
         self.set_fe(KL (self._latent, self._pred_latent)) # TODO
         # self._free_energy: 1-Tensor
         self._pred_latent = self.f_pred(self._latent)
-        # self.pred_latent: 1-Tensor
+        # self.pred_latent_dist: 1-Tensor
 
     def top_down(self):
 
@@ -98,9 +98,9 @@ class PredictiveNode(InformationNode):
         neighbors_pred_latent_weights = list()
         translated_neighbor_latent = list()
         for neighbor, f_trans in self.get_neighbors().items():
-            fe_weighted_entropy = neighbor._free_energy - entropy(neighbor.pred_latent) # TODO
+            fe_weighted_entropy = neighbor._free_energy - entropy(neighbor.pred_latent_dist) # TODO
             neighbors_pred_latent_weights.append(fe_weighted_entropy)
-            translated_neighbor_latent.append(f_trans(neighbor.pred_latent))
+            translated_neighbor_latent.append(f_trans(neighbor.pred_latent_dist))
 
         children_target_latent_weights = list()
         children_latents = list()

@@ -34,27 +34,30 @@ class InformationNode(NodeOrgan):
 
         self.d_rel = d_rel
 
-        self._latent = utils.structured_op(
-            latent_structure, op=lambda shp: tfd.TODO(shape=latent_structure)) # TODO
-        self.pred_latent = utils.structured_op(
-            latent_structure, op=lambda shp: tfd.TODO(shape=latent_structure)) # TODO
+        self._latent_dist = tfd.JointDistributionNamed(model=utils.structured_op(
+            latent_structure, lambda shape: tfd.Uniform(high=tf.ones(shape=shape))))
+        self._latent = self._latent_dist.sample()
+        self.pred_latent_dist = self._latent_dist
 
     def add_neighbor(self, neighbor, translator):
         self._neighbors[neighbor] = translator
 
     def bottom_up(self):
-        self._latent = self.f_abs(latent=self._latent,
-                                  parent_states=self._get_parent_states.values())  # dict Distribution
+        self._latent_dist = BIJECT(self._latent_dist,
+                              lambda latent: self.f_abs(latent=latent,
+                                  parent_states=self._get_parent_states.values()))  # dict Distribution
         # the latent should guide querying that way high entropy latents
         # are more responsive to low entropy stimuli
-        # self._latent: 1-Tensor, 2-Tensor, any...
+        self._latent = self._latent_dist.sample()
 
-        self.set_free_energy(utils.reduce_sum_dict(utils.pairwise_structured_op(
-            self._latent, self.pred_latent,
-            lambda true_dist, target_dist: true_dist.kl_divergence(target_dist))))
+        self.set_free_energy(self._latent_dist.kl_divergence(self.pred_latent_dist))
+            #utils.reduce_sum_dict(utils.pairwise_structured_op(
+            #self._latent_dist, self.pred_latent_dist,
+            #lambda true_dist, target_dist: true_dist.kl_divergence(target_dist))))
 
-        self.pred_latent = self.f_pred(latent=self._latent) # dict Distribution
-        # self.pred_latent: `self._latent`-like
+        self.pred_latent_dist = BIJECT(self._latent_dist,
+                                       lambda latent: self.f_pred(latent=latent)) # joint Distribution
+        # self.pred_latent_dist: `self._latent`-like
 
     def top_down(self):
         # give more weight to salient 'free-energy' stimuli and less
@@ -62,19 +65,20 @@ class InformationNode(NodeOrgan):
 
         for neighbor, f_trans in self._neighbors.items():
             self.set_target_info_state(
-                target_controllable_state=f_trans(neighbor.pred_latent),
+                target_controllable_state=f_trans(neighbor.pred_latent_dist),
                 weight=neighbor.get_free_energy - utils.reduce_sum_dict(
-                   utils.structured_op(neighbor.pred_latent, lambda x: x.entropy())),
+                   utils.structured_op(neighbor.pred_latent_dist, lambda x: x.entropy())),
                 callee=neighbor)
+        # TODO stopped here
+        # I need to make the `set_target_info_state convert any tensors into point distributions.
+        # this may not be possible so I will need to otherwise biject the self and neighbor predicted
+        # latent distributions (joined as one `Independant Joint` distribution) into the parents targets
+        # finally, take a sample and measure log_prob and entopy of sample and dist to set parent targets
+        # TODO I also haven't finished naming latent to _latent_dist
 
-        pred_latent_sample = self.pred_latent.sample() # if this is a joint distribution, the dict structure will be preserved
         self.set_target_info_state(
-            target_controllable_state=pred_latent_sample,
-            weight=self.get_free_energy +
-                   self.pred_latent.log_prob(pred_latent_sample) -
-                   self.pred_latent.entropy(), # if this is a joint distribution, the distribution functions will be preserved
-                   #utils.reduce_sum_dict(utils.structured_op(
-                   #     self.pred_latent, lambda x: x.entropy()))
+            target_controllable_state=self.pred_latent_dist,
+            weight=self.get_free_energy - self.pred_latent_dist.entropy(),
             callee=self)
 
         normalized_weights = K.softmax(K.stack(list(self.child_targets.values())[:, 0], axis=0))
