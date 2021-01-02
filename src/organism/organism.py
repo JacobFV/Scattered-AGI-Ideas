@@ -32,7 +32,7 @@ class Organism(utils.PermanentName):
 
     def step(self):
         # TODO make sure energy nodes perform top_down last
-        #  so their _fe accurately reflects leftovers
+        #  so their _free_energy accurately reflects leftovers
         for organ in self.organ_list:
             organ.step()
         self.step_num += 1

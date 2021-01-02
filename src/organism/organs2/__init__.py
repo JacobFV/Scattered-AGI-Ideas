@@ -27,7 +27,7 @@ class NodeOrgan(Organ):
         self.outgoing_edge_organs = dict() # dict<str: Organ>
         self.parallel_nodes = dict() # dict<str: Organ>
 
-        self.chemical_energy_node = None
+        self.energy_node = None
         # this will be assigned by the organism during graph construction
 
     def update_parents(self):
@@ -35,6 +35,10 @@ class NodeOrgan(Organ):
         self._parents.update(self.incoming_edge_organs)
         self._parents.update(self.outgoing_edge_organs)
         self._parents.update(self.parallel_nodes)
+
+    def set_free_energy(self, free_energy):
+        free_energy += self.energy_node.get_info_state['uncontrollable']['free_energy']
+        super(NodeOrgan, self).set_free_energy(free_energy)
 
 
 class EdgeOrgan(NodeOrgan):
@@ -53,3 +57,8 @@ class EdgeOrgan(NodeOrgan):
         self._parents['dst'] = self.dst_energy_node
         self._parents.update(self.parallel_edge_organs)
         self._parents.update(self.antiparallel_edge_organs)
+
+    def set_free_energy(self, free_energy):
+        free_energy += self.src_energy_node.get_info_state['uncontrollable']['free_energy'] + \
+                       self.dst_energy_node.get_info_state['uncontrollable']['free_energy']
+        super(NodeOrgan, self).set_free_energy(free_energy)

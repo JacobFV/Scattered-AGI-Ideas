@@ -72,7 +72,7 @@ class PredictiveNode(InformationNode):
         self._latent = tf.zeros(self.get_combined_state_space()[-1])
         self._pred_state = tf.zeros_like(self._latent)
 
-        self.child_targets = dict() # dict<PredictiveNode, target_state>
+        self.child_targets = dict() # dict<PredictiveNode, target_controllable_state>
 
     def add_neighbor(self, neighbor):
         self._neighbors[neighbor] = PredictiveNode.LatentTranslator(
@@ -88,9 +88,9 @@ class PredictiveNode(InformationNode):
         self._latent = self.f_abs(self._latent, observation)
         # self._latent: 1-Tensor
         self.set_fe(KL (self._latent, self._pred_latent)) # TODO
-        # self._fe: 1-Tensor
+        # self._free_energy: 1-Tensor
         self._pred_latent = self.f_pred(self._latent)
-        # self._pred_latent: 1-Tensor
+        # self.pred_latent: 1-Tensor
 
     def top_down(self):
 
@@ -98,14 +98,14 @@ class PredictiveNode(InformationNode):
         neighbors_pred_latent_weights = list()
         translated_neighbor_latent = list()
         for neighbor, f_trans in self.get_neighbors().items():
-            fe_weighted_entropy = neighbor._fe - entropy(neighbor._pred_latent) # TODO
+            fe_weighted_entropy = neighbor._free_energy - entropy(neighbor.pred_latent) # TODO
             neighbors_pred_latent_weights.append(fe_weighted_entropy)
-            translated_neighbor_latent.append(f_trans(neighbor._pred_latent))
+            translated_neighbor_latent.append(f_trans(neighbor.pred_latent))
 
         children_target_latent_weights = list()
         children_latents = list()
         for child, target_latent in self.child_targets:
-            children_target_latent_weights.append(child._fe - entropy(target_latent)) # TODO
+            children_target_latent_weights.append(child._free_energy - entropy(target_latent)) # TODO
             children_latents.append(target_latent)
 
         combined_latent_weights = neighbors_pred_latent_weights + \
@@ -117,7 +117,7 @@ class PredictiveNode(InformationNode):
     def _get_observation(self):
         parents = dict()
         for parent, rel in self.parents.items():
-            state = parent.get_state()
+            state = parent.get_info_state()
             state['uncontrollable']['rel'] = rel
             parents[parent] = state
         return parents
@@ -127,11 +127,11 @@ class PredictiveNode(InformationNode):
         target_xc_dict (dict<InformationNode, xc>)
         """
         for parent, target in target_xc_dict.items():
-            parent.set_target_state(target_state=target, callee=self)
+            parent.set_target_info_state(target_controllable_state=target, callee=self)
 
     def get_state(self):
         # ordinary PredictiveNervousNodes are almost fully controllable
-        return {'latent': self._latent, 'fe': self._fe}
+        return {'latent': self._latent, 'free_energy': self._fe}
 
     def set_target_state(self, target_latent, callee): # called by children; rarely by self
         self.child_targets[callee] = target_latent
@@ -140,7 +140,7 @@ class PredictiveNode(InformationNode):
         return {'latent': self._latent.shape}
 
     def get_uncontrollable_state_space(self): # not `observation_space`
-        return {'fe': (1,)}
+        return {'free_energy': (1,)}
 
     def get_combined_state_space(self):
         return self.get_controllable_state_space()\
