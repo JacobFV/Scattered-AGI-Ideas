@@ -50,14 +50,15 @@ class InformationNode(NodeOrgan):
         # are more responsive to low entropy stimuli
         self._latent = self._latent_dist.sample()
 
-        self.set_free_energy(self._latent_dist.kl_divergence(self.pred_latent_dist))
-            #utils.reduce_sum_dict(utils.pairwise_structured_op(
-            #self._latent_dist, self.pred_latent_dist,
-            #lambda true_dist, target_dist: true_dist.kl_divergence(target_dist))))
-
+        perception_energy = self._latent_dist.kl_divergence(self.pred_latent_dist)
         self.pred_latent_dist = BIJECT(self._latent_dist,
                                        lambda latent: self.f_pred(latent=latent)) # joint Distribution
         # self.pred_latent_dist: `self._latent`-like
+        self.pred_latent = self.pred_latent_dist.sample()
+        self.pred_latent_energy = self.pred_latent_dist.logp(self.pred_latent) # TODO: + logp or - logp
+        self.pred_latent_dist_energy = -self.pred_latent_dist.entropy()
+
+        self.set_free_energy(perception_energy + self.pred_latent_energy + self.pred_latent_dist_energy)
 
     def top_down(self):
         # give more weight to salient 'free-energy' stimuli and less
@@ -65,20 +66,13 @@ class InformationNode(NodeOrgan):
 
         for neighbor, f_trans in self._neighbors.items():
             self.set_target_info_state(
-                target_controllable_state=f_trans(neighbor.pred_latent_dist),
-                weight=neighbor.get_free_energy - utils.reduce_sum_dict(
-                   utils.structured_op(neighbor.pred_latent_dist, lambda x: x.entropy())),
+                target_controllable_state=f_trans(neighbor.pred_latent),
+                weight=neighbor.get_free_energy,
                 callee=neighbor)
-        # TODO stopped here
-        # I need to make the `set_target_info_state convert any tensors into point distributions.
-        # this may not be possible so I will need to otherwise biject the self and neighbor predicted
-        # latent distributions (joined as one `Independant Joint` distribution) into the parents targets
-        # finally, take a sample and measure log_prob and entopy of sample and dist to set parent targets
-        # TODO I also haven't finished naming latent to _latent_dist
 
         self.set_target_info_state(
-            target_controllable_state=self.pred_latent_dist,
-            weight=self.get_free_energy - self.pred_latent_dist.entropy(),
+            target_controllable_state=self.pred_latent,
+            weight=self.get_free_energy,
             callee=self)
 
         normalized_weights = K.softmax(K.stack(list(self.child_targets.values())[:, 0], axis=0))
@@ -93,13 +87,62 @@ class InformationNode(NodeOrgan):
             target=target_latent,
             current_parents=self._get_parent_states)
 
-        for parent, (target_state_sample, target_state_entropy) in target_parent_states:
+        for parent, (target_state_sample, target_state_weight) in target_parent_states:
             parent.set_target_info_state(
                 target_controllable_state=target_state_sample,
-                weight=target_state_entropy,
+                weight=target_state_weight,
                 callee=self)
 
         super(InformationNode, self).top_down()
+
+    def _start_adaptation(self):
+
+
+        reverb_client = None
+        batch_size = 8
+
+        # select memories to train on
+        num_episodes = f(self._rolling_free_energy)
+
+        train_batch = list()
+        t_since_last_train = 0
+        building_buffer = False
+        for experience in REVERB_BUFFER:
+            t_since_last_train += 1
+            if experience.rolling_free_energy > X:
+                building_buffer = True
+            elif not building_buffer:
+                continue
+
+            if building_buffer:
+                fv
+
+        # train in batches
+        def gen_batch(): pass
+
+        def train_on_batch(): pass
+
+            # train f_{abs} with dynamic forward propagation
+            # unsupervised learning (if enabled in model)
+            # _ = f_{abs} ( x^u, x^c, z_{t-1} ; training=True )
+
+            # train f_{abs} and f_{act} together by targeting a predicted latent
+            # min_{f_{act}, f_{abs}} KL [ Z_{t+1} || Z^{pred}_{t+1} ]
+            # stopgradient before Z_t.
+            # maybe even load Z_t, z^{*,comb}_{t+1}, x^u_{t+1} from buffer
+            # x^c_{t+1} = f_{act} ( z^{*,comb}_{t+1} )
+            # Z_{t+1} = f_{abs} ( Z_t , x^u_{t+1} , x^c_{t+1} )
+
+            # train f_pred by targeting the true next latent
+            # min_{f_{pred}} KL KL [ Z^{pred}_{t+1} || Z_{t+1} ]
+            # stopgradient before Z_t and Z_{t+1}
+            # maybe even load Z_t, Z_{t+1} from buffer
+            # Z^{pred}_{t+1} = f_pred(Z_t)
+
+            # train f_trans by association
+
+            pass
+        pass
 
     @property
     def _get_parent_states(self):
