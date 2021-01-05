@@ -42,20 +42,23 @@ class InformationNode(NodeOrgan):
     def add_neighbor(self, neighbor, translator):
         self._neighbors[neighbor] = translator
 
+
+    # TODO make a ML_style pipeline of a fully functional-oriented model
+    #  instead of storing stateful data inside `self`
     def bottom_up(self):
-        self._latent_dist = BIJECT(self._latent_dist,
-                              lambda latent: self.f_abs(latent=latent,
-                                  parent_states=self._get_parent_states.values()))  # dict Distribution
+        self._latent_dist = self.f_abs(latent=self._latent,
+                                       parent_states=self._get_parent_states.values())
+        # named Distribution
         # the latent should guide querying that way high entropy latents
         # are more responsive to low entropy stimuli
         self._latent = self._latent_dist.sample()
 
         perception_energy = self._latent_dist.kl_divergence(self.pred_latent_dist)
-        self.pred_latent_dist = BIJECT(self._latent_dist,
-                                       lambda latent: self.f_pred(latent=latent)) # joint Distribution
-        # self.pred_latent_dist: `self._latent`-like
+
+        self.pred_latent_dist = self.f_pred(latent=self._latent) # named Distribution
         self.pred_latent = self.pred_latent_dist.sample()
-        self.pred_latent_energy = self.pred_latent_dist.logp(self.pred_latent) # TODO: + logp or - logp
+
+        self.pred_latent_energy = self.pred_latent_dist.logp(self.pred_latent)
         self.pred_latent_dist_energy = -self.pred_latent_dist.entropy()
 
         self.set_free_energy(perception_energy + self.pred_latent_energy + self.pred_latent_dist_energy)
@@ -125,21 +128,24 @@ class InformationNode(NodeOrgan):
             # train f_{abs} with dynamic forward propagation
             # unsupervised learning (if enabled in model)
             # _ = f_{abs} ( x^u, x^c, z_{t-1} ; training=True )
+            # train f_trans by association
+            # p(z_neighbor, z_self)
 
             # train f_{abs} and f_{act} together by targeting a predicted latent
             # min_{f_{act}, f_{abs}} KL [ Z_{t+1} || Z^{pred}_{t+1} ]
-            # stopgradient before Z_t.
-            # maybe even load Z_t, z^{*,comb}_{t+1}, x^u_{t+1} from buffer
+            # stopgradient before z_t.
+            # maybe even load z_t, z^{*,comb}_{t+1}, x^u_{t+1} from buffer
             # x^c_{t+1} = f_{act} ( z^{*,comb}_{t+1} )
-            # Z_{t+1} = f_{abs} ( Z_t , x^u_{t+1} , x^c_{t+1} )
+            # Z_{t+1} = f_{abs} ( z_t , x^u_{t+1} , x^c_{t+1} )
 
             # train f_pred by targeting the true next latent
-            # min_{f_{pred}} KL KL [ Z^{pred}_{t+1} || Z_{t+1} ]
+            # min_{f_{pred}} KL [ Z^{pred}_{t+1} || Z_{t+1} ]
             # stopgradient before Z_t and Z_{t+1}
-            # maybe even load Z_t, Z_{t+1} from buffer
+            # build Z_t, Z_{t+1} from buffer z_t, z_{t+1}
             # Z^{pred}_{t+1} = f_pred(Z_t)
 
-            # train f_trans by association
+            # train f_pred over short and long rollouts
+
 
             pass
         pass
