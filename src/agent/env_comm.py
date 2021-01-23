@@ -7,23 +7,33 @@ class EnvComm(utils.PermanentName, utils.Stepable):
         self._commands = dict()
         self._responses = dict()
 
-    def add_command(self, cmd_id, cmd):
-        self._commands[cmd_id] = cmd
+        self._open_connection()
+
+    def __del__(self):
+        self._close_connection()
+
+    def __enter__(self): pass
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.__del__()
+
+    def add_command(self, id, cmd):
+        self._commands[id] = cmd
 
     @property
     def get_responses(self):
         return self._responses
 
     def step(self):
-        # superclasses should have already assigned responses to self._responses
+        # subclasses should have already assigned responses to self._responses
         self._commands.clear()
 
-    def open_connection(self):
-        # called separately from __init__
+    def _open_connection(self):
+        # called by __init__
         raise NotImplementedError()
 
-    def close_connection(self):
-        # called separately from __init__
+    def _close_connection(self):
+        # called by __del__
         raise NotImplementedError()
 
     def add_organism_to_env(self, organism):
@@ -31,6 +41,12 @@ class EnvComm(utils.PermanentName, utils.Stepable):
 
     def remove_organism_from_env(self, organism):
         raise NotImplementedError()
+
+
+class GymEnvComm(EnvComm): pass
+
+
+class TDWEnvComm(EnvComm): pass
 
 
 class UnityEnvComm(EnvComm):

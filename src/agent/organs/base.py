@@ -1,5 +1,3 @@
-from ..node import Node
-
 
 class Organ(Node):
 
@@ -28,7 +26,7 @@ class NodeOrgan(Organ):
         self.parallel_nodes = dict() # dict<str: Organ>
 
         self.energy_node = None
-        # this will be assigned by the organism during graph construction
+        # this will be assigned by the agent during graph construction
 
     def update_parents(self):
         self._parents.clear()
