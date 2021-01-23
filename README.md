@@ -42,7 +42,7 @@ policy._action(time_step: Timestep, policy_state: NestedArray) -> action: Policy
     InfoNodes interact with their neighbors. Here:
     1. organs perform logical updates like healing/adapting
     2. PredNodes perform neighbor state space clustering"""
-    for organ in self.organs:
+    for node in self.organs:
         neighbor_states = subdict(d=states[organ.name], ks=organ.neighbor_names)
         self_target, state[organ.name] = organ.forward(neighbor_states, self_state)
         targets[organ.name].append(self_target)
@@ -106,15 +106,18 @@ Organ.bottom_up(states):
 ==========================TODO===========================
 
 
-Agent: tfa.Agent
+Agent: TFAgent
+- __init__: (info_nodes: list[InfoNode]) -> None
 - name: str
-- train: (traj: Trajectory) -> loss: Tensor # nonidempotent. also trains its policy
-- policy: tfa.Network
+- train: (traj: Trajectory) -> loss_info: LossInfo # nonidempotent. also trains its policy
+- policy: TFPolicy
   - obs2dict: (observation: NestedTensor) -> dict[str, NestedTensor]
-  - dict2act: (action: dict[str, NestedTensor]) -> NestedTensor
-  - organs: dict[str,Organ]
-  - _action: (time_step:Timestep, policy_state:NestedArray) -> action:PolicyStep
-  - _blank_targets_dict: dict[str,list[NestedTensor]] # empty list to init the targets_dict
+  - dict2act: (targets: dict[str, NestedTensor]) -> NestedTensor
+  - info_nodes: dict[str,InfoNode]
+  - _action: (time_step: Timestep, policy_state: NestedArray) -> action: PolicyStep
+  - get_initial_state (batch_size: Optional[Int]) -> NestedTensor
+
+Trajectory: Dataset[NestedTensor]
 
 InfoNode
 - name: str
@@ -125,28 +128,35 @@ InfoNode
 - forward: (neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> (self_pred_state: NestedTensor, self_state: NestedTensor)
 - top_down: (targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
 - controllability_mask: Optional[NestedTensor]
-- trainable : bool
+- trainable: bool
+- train: (traj: NestedTensor) -> loss: float
 : PredNode
-  - f_abs
-  - f_pred
-  - f_act
+  - __init__(f_abs, f_pred, f_act, name) -> None
+  - f_trans: dict[str, Callable[[NestedTensor], NestedTensor]]
+  - f_abs: (parents: dict[str,NestedTensor], self_state: NestedTensor) -> self_state: NestedTensor 
+  - f_pred: (self_state: NestedTensor) -> self_state: NestedTensor
+  - f_act: (targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+  - train # complete override
   : DQNNode
+    - train # complete override
   : RewardNode
-: Organ : StatelessNode
-  - info_nodes : list[InfoNode]
+    - top_down # same signature, but adds a strong bias target before calling super.top_down
+    
+: Organ
+  - _info_nodes : dict[str,InfoNode]
   : Brain
-  : NavigableModality : abc.ABC
+  : NavigableModality
     "this superclass keeps track of data and loc in its recurrent state
     - interactive: bool # can the agent write values to its audio stream, text tape, or image imagination?
-    - f_window : data:nest[Tensor], loc:nest[Tensor] -> subset:nest[Tensor]
-    - info_nodes = subset_info_nodes + loc_info_nodes : list[InfoNode]
-    - subset_info_nodes : list[InfoNode]
+    - f_window : (data: NestedTensor, loc: NestedTensor) -> subset: NestedTensor
+    - @property _info_nodes: (self) -> list[InfoNode] = subset_info_nodes + loc_info_nodes
+    - data_info_nodes : list[InfoNode]
     - loc_info_nodes : list[InfoNode]
     : NavigableSequence
       - loc_info_nodes
-        . TODO
+        . navigator: GridNavigatorNode
       : NavigableText
-        - subset_info_nodes
+        - data_info_nodes
           . obs1 = LambdaInfoNode(gpt2 base)
           . act1 = LambdaInfoNode(gpt2 LM head)
           . obs2 = LambdaInfoNode(T5 base)
@@ -154,24 +164,26 @@ InfoNode
           . obs3 = LambdaInfoNode(Blender base)
           . act3 = LambdaInfoNode(Blender LM head)
       : NavigableAudio
-        - subset_info_nodes
+        - data_info_nodes
           . obs1 = LambdaInfoNode(wav2vec 2.0)
           . act1 = LambdaInfoNode(Tacotron 2)
-    : NavigableGraph
-      : NavigableGrid
-        : NavigableImage
+    : NavigableGrid
+      - loc_info_nodes
+        . navigator: GridNavigatorNode
+      : NavigableImage
+    : NavigableGraph = NotImplemented
   : TDWBody
   : TDWStickyMitten
   : EnergyNode
   : EnergyVessel
   : EnergyReservoir
   : EnergyConverter
-  
-: GymSpaces
+: GymSpaceNode
   - type: 'sensor'||'actuator'
   - key: str
-  : Box
-  : Discreet
-  : MultiBinary
-  : MultiDiscreet
+  : BoxSpaceNode
+  : DiscreetSpaceNode
+  : MultiBinarySpaceNode
+  : MultiDiscreetSpaceNode
+
 ```
