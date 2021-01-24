@@ -69,12 +69,12 @@ Agent.train(traj_batch):
     for organ_name, organ_traj in traj_batch.items():
         loss = loss + organs[organ_name].train(organ_traj)
         
+InfoNode.train(traj_batch):
+    varies for each subclass
+    
 Organ.train(traj_batch):
     varies for each subclass
     return loss
-    
-InfoNode.train(traj_batch):
-    varies for each subclass
     
 PredNode.train(traj_batch):
     if f_abs.trainable or f_pred.trainable: 
@@ -84,24 +84,54 @@ PredNode.train(traj_batch):
     if any(f_trans+[f_abs], lambda x: x.trainable) :
         # TODO miximize predicted latent similarity but
         # only for functions mapping to the top cluster
-        
-SubclassedOrgan.bottom_up(inputs, state):
-    hid = f(states)
-    return super(SubclassedOrgan, self).bottom_up(hid)
-    
-Organ.bottom_up(states):
-    for info_node in self.info_nodes:
-        states.update(info_node.bottom_up(states))
-    return states
 
-SubclassedOrgan.top_down(states):
-    hid = f(states)
-    return super(SubclassedOrgan, self).bottom_up(hid)
+### TODO: I need to work in an objective free energy metric to give Agent some insight on training prioritization
+
+InfoNode.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
+    # somehow update self_state['free_energy']
+    pass
     
-Organ.bottom_up(states):
-    for info_node in self.info_nodes:
-        states.update(info_node.bottom_up(states))
-    return states
+PredNode.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
+    self_state['z'] = self.f_abs(x=parent_states, z=self_state['z_prev']) - self_state['z_pred']
+    self_state['free_energy'] = tf.reduce_sum(self_state['z']) # I would've preferred KL[Z|Z_pred]. This can happen at training
+    return self_state
+    
+Organ.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
+    pass
+    
+InfoNodeInsideOrgan.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
+    # update self_state from state of Organ
+
+InfoNode.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> (self_pred_state: NestedTensor, self_state: NestedTensor):
+    pass
+    
+PredNode.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> (self_pred_state: NestedTensor, self_state: NestedTensor):
+    # get neighbor latents
+    z_neighbors = [s['z'] for s in neighbor_states.values()]
+    z_all = z_neighbors + self_state['z']
+    
+    # make close elements closer.
+    # simple:
+    if in 25-75 percentile: move self_state['z'] to 50th percentile
+    # complex:
+    cluster = fit_to_normal(data=z_all)
+    delta_z = 1 / ((cluster.mean - self_state['z'])**2
+                    * cluster.log_prob(self_state['z'] * cluster.variance)
+    self_state['z'] += delta_z
+    
+    # make prediction
+    self_state['z_pred'] = self.f_pred(self_state['z'])
+
+OrganExample.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+    target = targets[-1] # Organs assume only one nerve is controlling them
+    self_state['activity'] = target[0] # child InfoNodes will read this
+    
+    parent_targets = dict()
+    parent_targets['energy_node'] = energy_gain - energy_spent
+    parent_targets['Atari_motion'] = 'left' if self_state['activity'] > 0.5 else 'right' # just an example
+    
+    return parent_targets, self_state
+
 ==========================above=============================
 ==========================TODO===========================
 
