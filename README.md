@@ -20,7 +20,7 @@ the reward system and prioritize training. Most InfoNodes initially set their co
 `bottom_up` and update it during `forward` and `top_down`. Afterwards, it is recorded
 as the final cost for that step.
 
-EnergyNodes present energy in the form of a dense vector. Not all components are useful
+EnergySuppliers present energy in the form of a dense vector. Not all components are useful
 to all organs however. Some energy vector components even have bad effects just like the
 chemical profile of the bloodstream.
 
@@ -120,7 +120,8 @@ InfoNode.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTenso
 InfoNode.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> self_state: NestedTensor:
     return self_state
     
-InfoNode.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+InfoNode.top_down(targets: list[NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
+                -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
     # self_state['cost'] should be finalize by the end of the method
     return dict(), self_state
 
@@ -149,19 +150,23 @@ PredNode.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTens
     
     return self_state
 
-PredNode.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+PredNode.top_down(targets: list[NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
+                -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
     target = random_sample(targets) # NOT mean
     parent_targets = self.f_act(z_target=mean_target, z=self_state['z'])
     return parent_targets, self_state
 
 
-RewardNode.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+RewardNode.top_down(targets: list[NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
+                -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
     targets.append(self.const_set_point)
     return super(RewardNode, self).top_down(*args)
     
 
 Organ.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
     # use this function for env2organ interaction. save organ2organ for `forward`
+    
+    ######## TODO global_states: dict[str,NestedTensor] makes everything EASIER #######
     
     # we canonot actually take more energy than is available
     # NOTE: multiple organs might simultaneously ask for an amount that
@@ -184,7 +189,8 @@ Organ.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTensor)
                                                  self_state['internal_obs_state2'])
     return self_state
     
-Organ.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+Organ.top_down(targets: list[NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
+                -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
     target = random_sample(targets) # energy organs take the sum rather than random sample
     amount_to_move = target[0]
     energy_demanded = tf.sigm(self_state['energy'] * amount_to_move)
@@ -194,53 +200,12 @@ Organ.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent
     self_state['action1'] = energy_spent # child InfoNodes will read this data
     self_state['cost'] = energy_spent - energy_gained # positive => need more energy
     
+    ## TODO global_states makes energy calculations ALOT easier
     parent_targets = {
         self.energy_node_name: self_state['cost'],
         'env_controller_motion': 'left' if self_state['activity'] > 0.5 else 'right' # example of env action
     }
     
-    return parent_targets, self_state
-    
-    
-EnergyNode.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
-    return self_state
-    
-EnergyNode.forward(neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> self_state: NestedTensor:
-    # some equalibrium matrix. By default, this is an identity matrix
-    self_state['energy'] = M_energy_transitions @ self_state['energy'] 
-    return self_state
-    
-EnergyNode.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor):
-    consumed_energy = sum(target['cost'] for target in targets)
-    self_state['energy'] = self_state['energy'] - consumed_cost
-    # somehow get energy (either behave like regular organs and backpropagate
-    # the demand or convert it from another energy form. ie: energyA <-> energyB
-    
-    # make sure to set cost even for energy node
-    self_state['cost'] = -negative_amount_of(self_state['energy'])
-    
-    parent_targets = dict()
-    return parent_targets, self_state
-    
-    
-EnergyNode.bottom_up(parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor:
-    # we canonot actually take more energy than is available
-    # NOTE: multiple organs might simultaneously ask for an amount that
-    # sums to be greator than the energy node's available energy. While
-    # there is momentary 'free'/imaginary energy in existance, this is quickly
-    # exacted on the next frame step and optimzed against during training 
-    recvd_energy = tf.clip(self_state['cost'],
-                           0, parent_states[self.energy_node_name]['energy'])
-    # start the energy bill with any energy not available last round
-    # by not completely reassigning the 'cost' entry, we keep track of unpaid
-    # costs from multiple rounds
-    self_state['cost'] = self_state['cost'] - recvd_energy 
-    self_state['energy'] = self_state['energy'] + recvd_energy
-    return self_state
-    
-EnergyVessel.top_down(targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor):
-    parent_targets, self_state = super(EnergyVessel, self).top_down(targets, self_state)
-    parent_targets.update({self.energy_node_name: self_state['cost']})
     return parent_targets, self_state
 
 
@@ -264,10 +229,15 @@ InfoNode
 - child_names: list[str]
 - bottom_up: (parent_states: dict[str,NestedTensor], self_state:NestedTensor) -> self_state: NestedTensor
 - forward: (neighbor_states: dict[str,NestedTensor], self_state: NestedTensor) -> (self_pred_state: NestedTensor, self_state: NestedTensor)
-- top_down: (targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
+- top_down: (targets: list[NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
+            -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor, global_states: dict[str,NestedTensor])
 - controllability_mask: Optional[NestedTensor]
 - trainable: bool
 - train: (traj: NestedTensor) -> loss: float
+#: LambdaNode          ##### I will have to justify this node as it could be abused
+#  - __init__(bu: Optional[Callable], 
+#             fw: Optional[Callable], 
+#             td: Optional[Callable]) -> None
 : PredNode
   - __init__(f_abs, f_pred, f_act, name) -> None
   - f_trans: dict[str, Callable[[NestedTensor], NestedTensor]]
@@ -275,7 +245,7 @@ InfoNode
   - f_pred: (self_state: NestedTensor) -> self_state: NestedTensor
   - f_act: (targets: list[NestedTensor], self_state: NestedTensor) -> (parent_targets: dict[str,NestedTensor], self_state: NestedTensor)
   - train # complete override
-  : DQNNode
+  : RLNode
     - train # complete override
   : RewardNode
     - top_down # same signature, but adds a strong bias target before calling super.top_down
@@ -283,39 +253,28 @@ InfoNode
 : Organ
   - energy_node_name: str
   - _info_nodes: dict[str,InfoNode]
-  : Brain
   : NavigableModality
-    "this superclass keeps track of data and loc in its recurrent state
+    "this superclass keeps track of `data` and `loc` in its recurrent state"""
+    - __init__ (perception_fns: list[Callable], action_fns: list[Callable]) -> None
     - interactive: bool # can the agent write values to its audio stream, text tape, or image imagination?
     - f_window: (data: NestedTensor, loc: NestedTensor) -> subset: NestedTensor
     - @property _info_nodes: (self) -> list[InfoNode] = subset_info_nodes + loc_info_nodes
     - data_info_nodes: list[InfoNode]
     - loc_info_nodes: list[InfoNode]
-    : NavigableSequence
-      - loc_info_nodes
-        . navigator: GridNavigatorNode
-      : NavigableText
-        - data_info_nodes
-          . obs1 = LambdaInfoNode(gpt2 base)
-          . act1 = LambdaInfoNode(gpt2 LM head)
-          . obs2 = LambdaInfoNode(T5 base)
-          . act2 = LambdaInfoNode(T5 LM head)
-          . obs3 = LambdaInfoNode(Blender base)
-          . act3 = LambdaInfoNode(Blender LM head)
-      : NavigableAudio
-        - data_info_nodes
-          . obs1 = LambdaInfoNode(wav2vec 2.0)
-          . act1 = LambdaInfoNode(Tacotron 2)
     : NavigableGrid
-      - loc_info_nodes
-        . navigator: GridNavigatorNode
+      - __init__: (n_coef_navigators: Union[int,list[int]],
+                   max_speed: Union[int,list[int]],
+                   bounds: Union[int,list[int]],
+                   **kwargs) -> None
+      : NavigableText
+      : NavigableAudio
       : NavigableImage
-    : NavigableGraph = NotImplemented
+    : NavigableGraph
+  : EnergyStorage
+  : EnergyTransport
+  : EnergyConversion
   : TDWBody
   : TDWStickyMitten
-  : EnergyNode
-    : EnergyVessel
-    : EnergyReservoir
 : GymSpaceNode
   - type: 'sensor'||'actuator'
   - key: str
@@ -324,4 +283,80 @@ InfoNode
   : MultiBinarySpaceNode
   : MultiDiscreetSpaceNode
 
+```
+
+```
+code org (files are ordered as would be imported by __init__)
+
+nodal-rl:
+    __init__
+    agent
+    info_nodes:
+        __init__
+        info_node
+        lambda_node
+        pred_node
+        reward_node
+        rl_node
+        organs:
+            __init__
+            organ
+            navigable_modality:
+                __init__
+                base
+                grid:
+                    __init__
+                    text
+                    audio
+                    image
+                graph
+            energetics:
+                __init__
+                storage
+                transport
+                conversion
+            gym:
+                __init__
+                base
+                box
+                discreet
+                multi_binary
+                multi_discreet
+experiments:
+    atari:
+        single_env
+        continual_learning
+    tdw:
+        single_agent_exploration
+        multi_agent_exploration
+        human_interaction
+        tdw:
+            __init__
+            info_nodes:
+                __init__
+                organs:
+                    __init__
+                    avatar
+                    sticky_mitten         
+    limboid:
+        single_agent_exploration
+        multi_agent_exploration
+        human_interaction
+        limboid:
+            __init__
+            info_nodes:
+                __init__
+                organs:
+                    __init__
+                    bone
+                    muscle
+                    hand
+            env
+    stock_market
+    linux:
+        exploration
+        supervised
+        linux: # maybe find on already github
+            __init__
+            env
 ```
