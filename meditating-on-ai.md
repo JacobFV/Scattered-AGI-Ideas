@@ -1,5 +1,10 @@
 # Meditating on AI
 
+## 12 March 2021
+
+Switch transformers emphasized the search for new fronteir pushing dimensions. Here's one:
+- **how many agents are focused on the same goal?** This probably only applies in multiagent systems, but what I'm proposing is this: use an open-ended intelligence metric for survival. Literally train multiple agent on the same problem, structure their environment so they can communicate and cooperate, and then completely reinitialize weights and training for the poorest performing agents. This may be a temporary ocmputation sacrifice, but the result of training a new agent can find better convergence.
+
 ## 19 December 2020
 
 Generality is definitely important - but not the only consideration for sci-fi 'AGI'. Here are some papers I have been reading over 2020 on AGI. They are referenced by arxiv id (e.g.: 2012.08630 = https://arxiv.org/abs/2012.08630):
