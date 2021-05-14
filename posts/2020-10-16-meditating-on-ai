@@ -1,0 +1,22 @@
+---
+layout: post
+title:  Meditating on AI
+date:   2020-10-16
+description: 
+---
+
+
+OpenAI's concept of [circuits](https://distill.pub/2020/circuits/zoom-in/) seems related to my brother's thought of "extrema" precepts.
+
+> [. . .] the self-organized [global] gamma oscillation reflects a top-down cognitive process. [. . .] coherent perception of an object involves the synchronizatino of large cortical areas [. . .] working memory is a hypothetical mechanism that enables us to keep stimuli "in mind" after they are no longer available. The amount of information to be held at any given time is referred to as memory load. [. . .] gamma power increased linearly with memory load at multiple distributes sites, especially above the prefrontal cortex. [. . .] these observations support the more general idea that gamma oscillations are used in the brain for temporally segmenting representations of different items. [. . .] The goal of synchrony for neuronal populations is the same as the goal of action potentials for single cells: forwarding messages to downstream neurons in the most effective manner [. . .] every single time a post-synaptic neuron fire in a manner that the discharge leads to an increase of the free Ca2+ in the dendrites, the prevviously or subsequently active presynaptic onnections are modified. [. . .] the critical window of plasticity corresponds to the length of the gamma cycle. [. . .] Thus, even if gamma oscillation proves to be irrelevant for the binding problem, the oscillation remains a central timing mechanism essential for synaptic plasticity. On the other hand, gamma oscillations may link the problem of binding to plasticity. This is because synchronization by gamma oscillations results in not only perceptual binding but, inevitably, modification of connections among the neurons involved. Synaptic modifications can stailize assemblies representing currently experiences conjustions. In turn, theses use-dependant changes increase the probability that thte same assemblies will be activated upon future presentations of the same stimulus even if the stimulus is somewhat modified in the meantime, The assembly bound togethor by gamma-oscilation-induced synchrony can reconstruct patterns on the basis of partial cue because of the temporally fortified connections among neuron assembly members.  (*Rythyms of the Brain* p.245-247)
+
+What I conclude from this is that the brain behaves like a kohennen self organizing map in that I performs unsupervised classification of events. It also strengthens/weakens connections on the basis of leading or lagging presynaptic firing phase. Then stronger connections or tighter informatin bounds between presynaptic neurons and their postsynaptic target allow fewer cues be necesary to perform the same identification.
+
+Spatial thinkign is unique in the brain. I wonder if there is some general set of "spatial" structures integrating the spatial information from the corpus collosum, retinotopic maps, tonotopic maps, and orientation assemblies.
+
+From listening to Andrew Karpathy's interview in Andrew Ng's deep learning specialization, I consider the thought of an online "AGI Zoo" where AGI's can be started and stopped on demand by paying customers. All AGI's would be public. Users could place them in their own environments using HTTP protocals or allow the AGI's to interact in public environments for a lower cost. (less traffic) Some uses would be:
+1. observe their behavior under controlled environments (you can't really have general intelligence in a controlled environment though).
+2. automate the dirty work such as supervised learning example labeling.
+3. perform AGI psychology. The AGI Lab community would also host contests for users to enter their AGI's into
+These ends would all lead to collecting more data on artificial general intelligence safety.
+

@@ -1,0 +1,10 @@
+---
+layout: post
+title:  Meditating on AI
+date:   2020-09-25
+description: 
+---
+
+
+As [A Hierarchical Multi-task Approach for Learning Embeddings from Semantic Tasks](https://arxiv.org/abs/1811.06031) shows, deeper layers extract more abstract features.
+

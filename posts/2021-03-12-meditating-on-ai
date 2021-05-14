@@ -1,0 +1,11 @@
+---
+layout: post
+title:  Meditating on AI
+date:   2021-03-12
+description: 
+---
+
+
+Switch transformers emphasized the search for new fronteir pushing dimensions. Here's one:
+- **how many agents are focused on the same goal?** This probably only applies in multiagent systems, but what I'm proposing is this: use an open-ended intelligence metric for survival. Literally train multiple agent on the same problem, structure their environment so they can communicate and cooperate, and then completely reinitialize weights and training for the poorest performing agents. This may be a temporary ocmputation sacrifice, but the result of training a new agent can find better convergence. inspired from https://arxiv.org/pdf/2103.06769.pdf
+

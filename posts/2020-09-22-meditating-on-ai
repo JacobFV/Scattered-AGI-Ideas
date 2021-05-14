@@ -1,0 +1,14 @@
+---
+layout: post
+title:  Meditating on AI
+date:   2020-09-22
+description: 
+---
+
+
+Superintelligence poses threats of goal drift and erroneous autonomous goal shaping. I might use 'parent' AI's to guide 'child' AI's toward human-friendly behavior while not directly hacking the child AI's reward function.
+
+If I can't build a computer inside TDW, I might make one of the doorways lead to a computer world where the agent's actuators a diectly applied to mouse and keyboard and sensors directly to screen and audio.
+
+Information DNN neuron regularization penalizes the difference between marginal mutual information between neurons and the mutual information of activations/weight sums when conditioned on a particular multinomial class. (I will need to adopt a differential metric) This teaches me to look for the information theoretic foundations behind 'intuitive' yet actually limited concepts as weight divergence. 
+

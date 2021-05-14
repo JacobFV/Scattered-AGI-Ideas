@@ -1,0 +1,14 @@
+---
+layout: post
+title:  Meditating on AI
+date:   2020-10-7
+description: 
+---
+
+
+I've been reading a lot about the brain recently. I will write more about that soon. Essentially, it's about sheep and wolves (and hunters) routing information. Thinking directly in terms of information, I imagine conservative energy/information loops flowing from the brain through the environment back into the brain. The mind attenmpts to minimize free energy by dissipating it as entropy or expelling/diverting information to subcircuits and the environment. At the same time, the environment produces energy/information that the brain works to minimize. Excitatory neurons route information, while inhibitory neurons *kind of* block information flow. 
+
+Hopfield networks provide some guarantees of stability and show remarkable information compression. [Hopfield Networks is All You Need](https://arxiv.org/abs/2008.02217) highlights this and draws attention to the cost of attention when no representations are truely learnt.
+
+While diversity weight regularization does kind of promote distinct neuron representations, speaking directly in the language of information theory promotes even more diverse representations. I forgot the origonal paper that brought my attention to it, but [The Conditional Entropy Bottleneck](https://arxiv.org/abs/2002.05379), [Improving Robustness to Model Inversion Attacks via Mutual Information Regularization](https://arxiv.org/abs/2009.05241), and [Specialization in Hierarchical Learning Systems](https://link.springer.com/article/10.1007/s11063-020-10351-3) point in the same direction. Essentially, by directly thinking in terms of information theory, we find suprerior optimization. The thought is: play a minmax game with maximal representation entropy over all inputs minus but minimum representation entropy given a inputs belonging to a particular class.
+
